@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grain — Shoot more. Sort less.</title>
+  <meta name="description" content="Grain is a local AI photo pipeline for macOS. Automatic culling, smart organization, zero cloud. Your photos stay on your Mac." />
+  <meta property="og:title" content="Grain — Shoot more. Sort less." />
+  <meta property="og:description" content="Local AI photo pipeline for macOS. Plug in your SD card, press start, done." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & Base ───────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:        #60A5FA;
+      --green-dark:   #3B82F6;
+      --green-glow:   rgba(96, 165, 250, 0.10);
+      --green-border: rgba(96, 165, 250, 0.20);
+      --bg:           #03070F;
+      --bg-card:      #070D1A;
+      --bg-card2:     #0A1225;
+      --border:       rgba(255,255,255,0.06);
+      --border-hover: rgba(96, 165, 250, 0.30);
+      --text:         #EEF4FF;
+      --text-muted:   #7090B8;
+      --text-dim:     #3A5070;
+      --radius:       14px;
+      --radius-lg:    20px;
+      --max-w:        1100px;
+      --font-head:    'Rubik', sans-serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Film Grain Texture ─────────────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ── Typography ─────────────────────────────────────────────────────────── */
+    h1, h2, h3, h4 { font-family: var(--font-head); line-height: 1.1; letter-spacing: -0.03em; }
+
+    /* ── Layout Helpers ─────────────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .section { padding: 120px 0; }
+
+    /* ── Scroll Reveal ──────────────────────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── Buttons ────────────────────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green);
+      color: #030818;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 0 0 0 rgba(96,165,250,0);
+    }
+    .btn-primary:hover {
+      background: #93C5FD;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(96,165,250,0.25);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    /* ── Nav ────────────────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: calc(100% - 48px);
+      max-width: 900px;
+      background: rgba(10, 9, 8, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-mark {
+      width: 30px;
+      height: 30px;
+      background: var(--green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-logo-text {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+
+    /* ── Hero ───────────────────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 24px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Radial glow behind hero */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(245,158,11,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-glow);
+      border: 1px solid var(--green-border);
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+      letter-spacing: 0.02em;
+    }
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      margin-bottom: 12px;
+      max-width: 900px;
+    }
+    .hero-headline .accent { color: var(--green); }
+
+    .hero-slogan {
+      font-family: var(--font-head);
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+    }
+    .trust-icon { color: var(--green); flex-shrink: 0; }
+
+    /* Screen mockup */
+    .hero-mockup {
+      margin-top: 80px;
+      width: 100%;
+      max-width: 820px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+      position: relative;
+    }
+    .mockup-bar {
+      background: #0A1225;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .mockup-dot.red { background: #FF5F57; }
+    .mockup-dot.yellow { background: #FFBD2E; }
+    .mockup-dot.green { background: #28C840; }
+    .mockup-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      font-family: var(--font-head);
+      font-weight: 500;
+      margin-right: 48px;
+    }
+    .mockup-body {
+      padding: 28px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .mockup-card {
+      background: #0A1225;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .mockup-card-label { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .mockup-card-value { font-family: var(--font-head); font-weight: 700; font-size: 1.4rem; color: var(--text); }
+    .mockup-card-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .mockup-card.amber-accent { border-color: var(--green-border); }
+    .mockup-card.amber-accent .mockup-card-value { color: var(--green); }
+    .mockup-log {
+      grid-column: 1 / -1;
+      background: #06101E;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.75rem;
+    }
+    .log-line { margin-bottom: 3px; }
+    .log-green { color: #60A5FA; }
+    .log-amber { color: var(--green); }
+    .log-muted { color: var(--text-dim); }
+    .log-blue { color: #60A5FA; }
+
+    /* ── Section Labels ─────────────────────────────────────────────────────── */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    /* ── Problem Section ────────────────────────────────────────────────────── */
+    #problem {
+      padding: 100px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--bg) 0%, #060F1C 50%, var(--bg) 100%);
+    }
+    .problem-inner { text-align: center; max-width: 700px; margin: 0 auto; }
+    .problem-headline {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      margin-bottom: 24px;
+      letter-spacing: -0.04em;
+    }
+    .problem-headline .strike { text-decoration: line-through; color: var(--text-muted); }
+    .problem-text { font-size: 1.1rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 16px; }
+    .problem-stat {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 32px;
+    }
+    .problem-stat strong { color: var(--green); }
+
+    /* ── How it Works ───────────────────────────────────────────────────────── */
+    #how { padding: 120px 0; }
+    .how-headline { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 64px; text-align: center; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; position: relative; }
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 48px;
+      left: 17%;
+      right: 17%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green-border), var(--green-border), transparent);
+    }
+    .step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      text-align: center;
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .step:hover { border-color: var(--border-hover); transform: translateY(-4px); }
+    .step:first-child { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+    .step:last-child { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+    .step-number {
+      width: 52px;
+      height: 52px;
+      background: var(--green-glow);
+      border: 2px solid var(--green-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--green);
+      margin: 0 auto 24px;
+      position: relative;
+      z-index: 1;
+      background: var(--bg-card);
+    }
+    .step-icon {
+      margin: 0 auto 20px;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .step h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+    .step p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+    .step-tag {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 0.72rem;
+      color: var(--green);
+      background: var(--green-glow);
+      border: 1px solid var(--green-border);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    /* ── Features ───────────────────────────────────────────────────────────── */
+    #features { padding: 120px 0; border-top: 1px solid var(--border); }
+    .features-header { text-align: center; margin-bottom: 64px; }
+    .features-headline { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; }
+    .features-sub { font-size: 1.05rem; color: var(--text-muted); margin-top: 12px; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      transition: border-color 0.3s, transform 0.3s, background 0.3s;
+      cursor: default;
+    }
+    .feature-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+      background: #08122A;
+    }
+    .feature-card.featured {
+      background: linear-gradient(135deg, #08112A, #050E20);
+      border-color: var(--green-border);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .feature-card.featured .feature-icon {
+      background: var(--green-glow);
+      border-color: var(--green-border);
+    }
+    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── Philosophy Section ─────────────────────────────────────────────────── */
+    #philosophy {
+      padding: 140px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #philosophy::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(245,158,11,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .philosophy-quote {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      max-width: 760px;
+      margin: 0 auto 32px;
+    }
+    .philosophy-quote .highlight { color: var(--green); }
+    .philosophy-body {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+    .philosophy-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--green);
+      margin: 40px auto;
+      border-radius: 2px;
+    }
+    .philosophy-manifesto {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      max-width: 800px;
+      margin: 64px auto 0;
+      text-align: left;
+    }
+    .manifesto-item h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .manifesto-item p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── Pricing ────────────────────────────────────────────────────────────── */
+    #pricing { padding: 120px 0; border-top: 1px solid var(--border); }
+    .pricing-header { text-align: center; margin-bottom: 56px; }
+    .pricing-headline { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; }
+    .pricing-sub { font-size: 1rem; color: var(--text-muted); margin-top: 12px; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+    }
+    .pricing-card.pro {
+      background: linear-gradient(135deg, #08112A, #050E20);
+      border-color: var(--green-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .pricing-card.pro::before {
+      content: 'Coming Soon';
+      position: absolute;
+      top: 20px;
+      right: -28px;
+      background: var(--green);
+      color: #030818;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 40px;
+      transform: rotate(45deg);
+      letter-spacing: 0.05em;
+    }
+    .pricing-tier {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .pricing-card.pro .pricing-tier { color: var(--green); }
+    .pricing-price {
+      font-family: var(--font-head);
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+    .pricing-price-note { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 28px; }
+    .pricing-features { list-style: none; margin-bottom: 32px; }
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .pricing-features li:last-child { border-bottom: none; }
+    .check-icon { color: var(--green); flex-shrink: 0; margin-top: 2px; }
+    .pricing-cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 13px;
+      border-radius: 9px;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .pricing-cta.primary {
+      background: var(--green);
+      color: #030818;
+    }
+    .pricing-cta.primary:hover { background: #93C5FD; transform: translateY(-1px); }
+    .pricing-cta.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .pricing-cta.secondary:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+
+    /* ── Download CTA ───────────────────────────────────────────────────────── */
+    #download {
+      padding: 140px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #download::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--border);
+    }
+    .download-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(245,158,11,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .download-headline {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 20px;
+    }
+    .download-sub {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .download-meta {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .download-meta-item { font-size: 0.82rem; color: var(--text-dim); }
+    .download-meta-sep { color: var(--text-dim); }
+
+    /* ── Footer ─────────────────────────────────────────────────────────────── */
+    footer {
+      padding: 40px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .footer-logo-mark {
+      width: 26px;
+      height: 26px;
+      background: var(--green);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-brand-text {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+    .footer-brand-slogan { font-size: 0.78rem; color: var(--text-dim); }
+    .footer-right { font-size: 0.8rem; color: var(--text-dim); }
+
+    /* ── Divider ────────────────────────────────────────────────────────────── */
+    .divider { height: 1px; background: var(--border); }
+
+    /* ── Responsive ─────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 12px; }
+      .steps::before { display: none; }
+      .step:first-child, .step:last-child { border-radius: var(--radius-lg); }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .philosophy-manifesto { grid-template-columns: 1fr; }
+      .mockup-body { grid-template-columns: 1fr; }
+      nav { width: calc(100% - 24px); padding: 10px 16px; }
+      .nav-links .nav-link:not(:last-child) { display: none; }
+      footer { flex-direction: column; text-align: center; align-items: center; }
+    }
+    @media (max-width: 640px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .hero-cta { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-ghost { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────────────────────── -->
+  <nav>
+    <a href="#" class="nav-logo" aria-label="Grain home">
+      <div class="nav-logo-mark" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 13L8 3L13 13" stroke="#030818" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5.5 9.5H10.5" stroke="#030818" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">Grain</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#download" class="btn-primary" style="padding: 8px 18px; font-size: 0.875rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot" aria-hidden="true"></span>
+      Free for macOS · Early Access
+    </div>
+
+    <h1 class="hero-headline reveal reveal-delay-1">
+      Stop sorting.<br><span class="accent">Start shooting.</span>
+    </h1>
+
+    <p class="hero-slogan reveal reveal-delay-2">Grain — Shoot more. Sort less.</p>
+
+    <p class="hero-desc reveal reveal-delay-3">
+      A local AI photo pipeline for macOS. Plug in your SD card, press start —
+      Grain culls, organizes, and archives your photos automatically.
+      No cloud. No subscription. No compromise.
+    </p>
+
+    <div class="hero-cta reveal reveal-delay-4">
+      <a href="#download" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download for macOS — Free
+      </a>
+      <a href="#how" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+        See how it works
+      </a>
+    </div>
+
+    <div class="hero-trust reveal reveal-delay-5">
+      <div class="trust-item">
+        <svg class="trust-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        100% Local AI
+      </div>
+      <div class="trust-item">
+        <svg class="trust-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        No Cloud Upload
+      </div>
+      <div class="trust-item">
+        <svg class="trust-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Free to Download
+      </div>
+      <div class="trust-item">
+        <svg class="trust-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        macOS Native
+      </div>
+    </div>
+
+    <!-- App mockup -->
+    <div class="hero-mockup reveal reveal-delay-5" aria-hidden="true">
+      <div class="mockup-bar">
+        <div class="mockup-dot red"></div>
+        <div class="mockup-dot yellow"></div>
+        <div class="mockup-dot green"></div>
+        <div class="mockup-title">🌾 Grain</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-card amber-accent">
+          <div class="mockup-card-label">Photos found</div>
+          <div class="mockup-card-value" id="counter">463</div>
+          <div class="mockup-card-sub">68 new · 395 already archived</div>
+        </div>
+        <div class="mockup-card">
+          <div class="mockup-card-label">Estimated time</div>
+          <div class="mockup-card-value">~6 Min</div>
+          <div class="mockup-card-sub">moondream AI · ☕ Mac stays awake</div>
+        </div>
+        <div class="mockup-log">
+          <div class="log-line log-blue">── Grain Pipeline ──────────────────</div>
+          <div class="log-line log-muted">→ SD card detected: /Volumes/NO NAME</div>
+          <div class="log-line log-green">✅ 68 new photos found (395 archived)</div>
+          <div class="log-line log-amber">🤖 AI culling... 34/68</div>
+          <div class="log-line log-green">⭐ TOP: DSC_0042.rw2 — score 94</div>
+          <div class="log-line log-muted">✓ KEEP: DSC_0041.rw2 — score 71</div>
+          <div class="log-line log-muted">✗ REJECT: DSC_0039.rw2 — blurry</div>
+          <div class="log-line log-green">✅ Pipeline complete — 6 min 12 sec</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Problem ───────────────────────────────────────────────────────────── -->
+  <section id="problem">
+    <div class="container">
+      <div class="problem-inner">
+        <p class="section-label reveal">The real problem</p>
+        <h2 class="problem-headline reveal reveal-delay-1">
+          You shoot 400 photos.<br>
+          Then <span class="strike">life</span> sorting begins.
+        </h2>
+        <p class="problem-text reveal reveal-delay-2">
+          You come home excited after a great session. The light was perfect.
+          You got the shot. Then you open Lightroom — and spend the next
+          <strong style="color:var(--text)">three hours</strong> clicking through
+          blurry duplicates, overexposed rejects, and almost-greats.
+        </p>
+        <p class="problem-text reveal reveal-delay-3">
+          By the end, you're too tired to actually edit. The joy is gone.
+          The best shots are buried. And your SD card is still full.
+        </p>
+        <div class="problem-stat reveal reveal-delay-4">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Photographers spend an average of <strong>40% of their editing time just culling.</strong>
+          Grain gives that time back.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How it Works ──────────────────────────────────────────────────────── -->
+  <section id="how" class="section">
+    <div class="container">
+      <p class="section-label reveal" style="text-align:center">How it works</p>
+      <h2 class="how-headline reveal reveal-delay-1">Three steps. Zero hassle.</h2>
+      <div class="steps">
+
+        <div class="step reveal reveal-delay-1">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <div class="step-number">1</div>
+          <h3>Plug in your SD card</h3>
+          <p>Grain detects your card automatically. Or point it to any folder on your Mac.</p>
+          <span class="step-tag">Auto-detection</span>
+        </div>
+
+        <div class="step reveal reveal-delay-2">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="step-number">2</div>
+          <h3>Press Start</h3>
+          <p>That's it. Grain culls, analyzes, and archives while your Mac stays awake — no babysitting needed.</p>
+          <span class="step-tag">One click</span>
+        </div>
+
+        <div class="step reveal reveal-delay-3">
+          <div class="step-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="step-number">3</div>
+          <h3>Open your archive</h3>
+          <p>Best shots marked ⭐ TOP. Rejects flagged. AI feedback written. Open Lightroom and start creating.</p>
+          <span class="step-tag">Ready to edit</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ──────────────────────────────────────────────────────────── -->
+  <section id="features">
+    <div class="container">
+      <div class="features-header">
+        <p class="section-label reveal">What Grain does</p>
+        <h2 class="features-headline reveal reveal-delay-1">Everything. Automatically.</h2>
+        <p class="features-sub reveal reveal-delay-2">Six things that used to take hours. Now zero effort.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card featured reveal reveal-delay-1">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>100% Local AI</h3>
+          <p>All analysis runs on your Mac via Ollama. Your photos never leave your machine. No account. No cloud. No data collection. Ever.</p>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3>Smart Auto-Culling</h3>
+          <p>Every photo scored on sharpness, exposure, histogram quality, and composition. Top 20% marked as stars. Rejects flagged automatically.</p>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3>Time Estimate</h3>
+          <p>Before you start, Grain shows exactly how many new photos it found and how long it'll take. No surprises.</p>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-4">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <h3>Mac Stays Awake</h3>
+          <p>Grain keeps your Mac from sleeping during the pipeline — no more waking up to a half-finished job. Automatically disabled when done.</p>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-5">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <h3>Smart Dedup</h3>
+          <p>Already processed photos are recognized instantly. Run Grain again and it only processes what's new — never duplicates work.</p>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3>HDR Bracketing</h3>
+          <p>Bracket series are detected, merged into HDR, and labeled — all automatically. Get publication-ready HDRs without touching software.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Philosophy ────────────────────────────────────────────────────────── -->
+  <section id="philosophy" class="section">
+    <div class="container">
+      <div class="philosophy-divider reveal"></div>
+      <p class="philosophy-quote reveal reveal-delay-1">
+        "The best photo tool is the one<br>
+        <span class="highlight">you forget about.</span>"
+      </p>
+      <p class="philosophy-body reveal reveal-delay-2">
+        We built Grain because we were tired of spending more time managing photos
+        than making them. Photography is about light, moments, and craft —
+        not file management. Grain handles the machine work so you can
+        focus on the human part.
+      </p>
+      <div class="philosophy-manifesto">
+        <div class="manifesto-item reveal reveal-delay-2">
+          <h4>Private by design</h4>
+          <p>Your photos are personal. They run through local AI only, on your hardware, with zero network calls.</p>
+        </div>
+        <div class="manifesto-item reveal reveal-delay-3">
+          <h4>Craft over complexity</h4>
+          <p>One button. One click. No presets to configure, no workflows to build. Grain just works.</p>
+        </div>
+        <div class="manifesto-item reveal reveal-delay-4">
+          <h4>Built for film culture</h4>
+          <p>Grain is for photographers who care about the process — from shutter click to final edit.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pricing ───────────────────────────────────────────────────────────── -->
+  <section id="pricing">
+    <div class="container">
+      <div class="pricing-header">
+        <p class="section-label reveal">Pricing</p>
+        <h2 class="pricing-headline reveal reveal-delay-1">Simple. Honest.</h2>
+        <p class="pricing-sub reveal reveal-delay-2">Start free. Upgrade when you're ready.</p>
+      </div>
+
+      <div class="pricing-grid">
+
+        <div class="pricing-card reveal reveal-delay-1">
+          <div class="pricing-tier">Grain Free</div>
+          <div class="pricing-price">€0</div>
+          <div class="pricing-price-note">Forever free · No credit card</div>
+          <ul class="pricing-features">
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Full pipeline — ingest, cull, archive
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Local AI analysis (Moondream / LLaVA)
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Smart duplicate detection
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              HDR bracket detection & merge
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              100% local — no cloud ever
+            </li>
+          </ul>
+          <a href="#download" class="pricing-cta primary">Download Free</a>
+        </div>
+
+        <div class="pricing-card pro reveal reveal-delay-2">
+          <div class="pricing-tier">Grain Pro</div>
+          <div class="pricing-price" style="color: var(--green);">€19</div>
+          <div class="pricing-price-note">One-time · No subscription</div>
+          <ul class="pricing-features">
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Everything in Free
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Unlimited photos per session
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Priority model support
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Export presets (Web, Social, Print)
+            </li>
+            <li>
+              <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Early access to new features
+            </li>
+          </ul>
+          <a href="#" class="pricing-cta secondary" aria-label="Grain Pro coming soon">Notify me when available</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Download ──────────────────────────────────────────────────────────── -->
+  <section id="download">
+    <div class="download-glow" aria-hidden="true"></div>
+    <div class="container" style="position:relative; z-index:1;">
+      <p class="section-label reveal">Get started now</p>
+      <h2 class="download-headline reveal reveal-delay-1">
+        Ready to shoot more?
+      </h2>
+      <p class="download-sub reveal reveal-delay-2">
+        Free. Local. No account needed. Just download and run.
+      </p>
+      <div class="reveal reveal-delay-3">
+        <a href="https://github.com/bbenni2/Grain/releases/latest/download/Grain-1.5.0.dmg"
+           class="btn-primary" style="font-size: 1.1rem; padding: 16px 36px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Grain-1.5.0.dmg — Free
+        </a>
+        <p style="margin-top:12px; font-size:0.8rem; color:var(--text-dim);">
+          Grain-1.5.0.dmg · macOS · Apple Silicon &amp; Intel
+        </p>
+      </div>
+
+      <!-- Email signup -->
+      <div class="reveal reveal-delay-4" style="margin-top:48px; max-width:460px; margin-left:auto; margin-right:auto;">
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
+          Get notified about updates &amp; Grain Pro launch:
+        </p>
+        <form id="email-form" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;"
+              onsubmit="handleEmailSubmit(event)">
+          <input type="email" id="email-input" placeholder="your@email.com" required
+            style="flex:1; min-width:200px; padding:12px 16px; border-radius:9px;
+                   background:var(--bg-card2); border:1px solid var(--border);
+                   color:var(--text); font-size:0.9rem; outline:none;
+                   font-family:var(--font-body);"
+            onfocus="this.style.borderColor='var(--green)'"
+            onblur="this.style.borderColor='var(--border)'" />
+          <button type="submit"
+            style="padding:12px 22px; border-radius:9px; background:var(--bg-card2);
+                   border:1px solid var(--border); color:var(--text-muted);
+                   font-family:var(--font-head); font-weight:600; font-size:0.9rem;
+                   cursor:pointer; transition:all 0.2s; white-space:nowrap;"
+            onmouseover="this.style.borderColor='var(--green-border)'; this.style.color='var(--text)'"
+            onmouseout="this.style.borderColor='var(--border)'; this.style.color='var(--text-muted)'">
+            Notify me
+          </button>
+        </form>
+        <p id="email-thanks" style="display:none; margin-top:10px; font-size:0.85rem; color:var(--green);">
+          ✓ You're on the list. We'll be in touch.
+        </p>
+      </div>
+
+      <div class="download-meta reveal reveal-delay-4" style="margin-top:32px;">
+        <span class="download-meta-item">macOS 12+</span>
+        <span class="download-meta-sep">·</span>
+        <span class="download-meta-item">Apple Silicon &amp; Intel</span>
+        <span class="download-meta-sep">·</span>
+        <span class="download-meta-item">Requires Ollama (free)</span>
+        <span class="download-meta-sep">·</span>
+        <span class="download-meta-item">Free · No account</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────────────────── -->
+  <div class="divider"></div>
+  <div class="container">
+    <footer>
+      <a href="#" class="footer-brand" aria-label="Grain home">
+        <div class="footer-logo-mark" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <path d="M3 13L8 3L13 13" stroke="#030818" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.5 9.5H10.5" stroke="#030818" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="footer-brand-text">Grain</div>
+          <div class="footer-brand-slogan">Shoot more. Sort less.</div>
+        </div>
+      </a>
+      <div class="footer-right">
+        © 2025 Grain. Built for photographers, by a photographer.
+      </div>
+    </footer>
+  </div>
+
+  <!-- ── JS: Scroll Reveal ────────────────────────────────────────────────── -->
+  <script>
+    // Intersection Observer for reveal animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const offset = 80;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Counter animation for hero mockup
+    function animateCounter(el, target, duration) {
+      let start = 0;
+      const step = Math.ceil(target / (duration / 16));
+      const timer = setInterval(() => {
+        start = Math.min(start + step, target);
+        el.textContent = start;
+        if (start >= target) clearInterval(timer);
+      }, 16);
+    }
+
+    // Trigger counter when hero mockup enters view
+    const counterEl = document.getElementById('counter');
+    if (counterEl) {
+      const counterObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          animateCounter(counterEl, 463, 1200);
+          counterObs.disconnect();
+        }
+      }, { threshold: 0.5 });
+      counterObs.observe(counterEl);
+    }
+
+    // Email form — stores locally for now, replace with Beehiiv/Mailchimp endpoint
+    function handleEmailSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('email-input').value;
+      // TODO: replace with real endpoint e.g. Beehiiv subscribe API
+      // fetch('https://api.beehiiv.com/v2/publications/YOUR_ID/subscriptions', {...})
+      console.log('Email signup:', email);
+      document.getElementById('email-form').style.display = 'none';
+      document.getElementById('email-thanks').style.display = 'block';
+    }
+
+    // Nav: add shadow on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        nav.style.borderColor = 'rgba(255,255,255,0.1)';
+      } else {
+        nav.style.borderColor = 'rgba(255,255,255,0.07)';
+      }
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
