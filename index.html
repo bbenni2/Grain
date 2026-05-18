@@ -3,78 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ── SEO ──────────────────────────────────────────────────────────────── -->
   <title>Grain — Shoot more. Sort less. | Local AI Photo Pipeline for macOS</title>
   <meta name="description" content="Grain culls, organises, and archives your photos automatically with local AI. Plug in your SD card, press start, done. Free. No cloud. macOS only." />
-  <link rel="canonical" href="https://getgrain.app/" />
-
-  <!-- Open Graph -->
+  <link rel="canonical" href="https://getgrained.app/" />
   <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://getgrain.app/" />
+  <meta property="og:url"         content="https://getgrained.app/" />
   <meta property="og:title"       content="Grain — Shoot more. Sort less." />
-  <meta property="og:description" content="Local AI photo pipeline for macOS. Plug in your SD card, press start — Grain culls, organises, and archives your photos automatically. Free. No cloud." />
-  <meta property="og:image"       content="https://getgrain.app/og-image.png" />
+  <meta property="og:description" content="Local AI photo pipeline for macOS. Plug in your SD card, press start — Grain does the rest." />
+  <meta property="og:image"       content="https://getgrained.app/og-image.png" />
   <meta name="twitter:card"       content="summary_large_image" />
-  <meta name="twitter:title"      content="Grain — Shoot more. Sort less." />
-  <meta name="twitter:description" content="Local AI photo pipeline for macOS. Free. No cloud. No subscription." />
-
-  <!-- ── Fonts ─────────────────────────────────────────────────────────────── -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Grain","operatingSystem":"macOS","applicationCategory":"PhotographyApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"description":"Local AI photo pipeline for macOS. Automatic culling, smart organisation, zero cloud.","url":"https://getgrained.app/","downloadUrl":"https://github.com/bbenni2/Grain/releases/latest/download/Grain-1.5.0.dmg","softwareVersion":"1.5.0"}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
-  <!-- ── Schema.org JSON-LD ────────────────────────────────────────────────── -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Grain",
-    "operatingSystem": "macOS",
-    "applicationCategory": "PhotographyApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "EUR"
-    },
-    "description": "Local AI photo pipeline for macOS. Automatic culling, smart organisation, zero cloud.",
-    "url": "https://getgrain.app/",
-    "downloadUrl": "https://github.com/bbenni2/Grain/releases/latest/download/Grain-1.5.0.dmg",
-    "softwareVersion": "1.5.0",
-    "screenshot": "https://getgrain.app/og-image.png"
-  }
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* ── Reset ──────────────────────────────────────────────────────────────── */
+    /* ─── Reset ────────────────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Design Tokens ──────────────────────────────────────────────────────── */
+    /* ─── Tokens ───────────────────────────────────────────────────────────── */
     :root {
-      --accent:        #60A5FA;
-      --accent-dark:   #3B82F6;
-      --accent-glow:   rgba(96, 165, 250, 0.10);
-      --accent-border: rgba(96, 165, 250, 0.22);
-      --bg:            #03070F;
-      --bg-card:       #070D1A;
-      --bg-card2:      #0A1225;
-      --border:        rgba(255, 255, 255, 0.06);
-      --border-hover:  rgba(96, 165, 250, 0.30);
-      --text:          #EEF4FF;
-      --text-muted:    #7090B8;
-      --text-dim:      #3A5070;
-      --radius:        14px;
-      --radius-lg:     20px;
-      --max-w:         1100px;
-      --font-head:     'Rubik', sans-serif;
-      --font-body:     'Inter', sans-serif;
-      /* 8px spacing scale */
-      --sp-1: 8px;  --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
-      --sp-5: 48px; --sp-6: 64px; --sp-7: 96px; --sp-8: 128px;
+      --amber:        #F59E0B;
+      --amber-light:  #FCD34D;
+      --amber-dark:   #D97706;
+      --amber-glow:   rgba(245, 158, 11, 0.12);
+      --amber-border: rgba(245, 158, 11, 0.25);
+      --bg:           #0C0A09;
+      --bg-warm:      #111008;
+      --bg-card:      #161310;
+      --bg-card2:     #1C1914;
+      --border:       rgba(255,255,255,0.07);
+      --border-warm:  rgba(245,158,11,0.18);
+      --text:         #FFF8F0;
+      --text-muted:   #8A7A68;
+      --text-dim:     #4A3D30;
+      --radius:       12px;
+      --radius-lg:    18px;
+      --max-w:        1120px;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; font-size: 16px; }
-
     body {
       background: var(--bg);
       color: var(--text);
@@ -82,1397 +52,1107 @@
       line-height: 1.65;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── Film Grain Overlay ─────────────────────────────────────────────────── */
+    /* ─── Grain Texture ────────────────────────────────────────────────────── */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       pointer-events: none;
       z-index: 9999;
-      opacity: 0.032;
+      opacity: 0.04;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
+      background-size: 180px 180px;
     }
 
-    /* ── Skip Link (Accessibility) ──────────────────────────────────────────── */
-    .skip-link {
-      position: absolute;
-      top: -100px;
-      left: var(--sp-3);
-      background: var(--accent);
-      color: #030818;
-      font-weight: 700;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      z-index: 10000;
-      transition: top 0.2s;
-    }
-    .skip-link:focus { top: var(--sp-2); }
+    /* ─── Accessibility ────────────────────────────────────────────────────── */
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .skip-link { position:absolute; top:-100px; left:24px; background:var(--amber); color:#0C0A09; font-weight:700; padding:10px 20px; border-radius:8px; text-decoration:none; z-index:10000; transition:top .2s; }
+    .skip-link:focus { top:24px; }
+    :focus-visible { outline:2px solid var(--amber); outline-offset:3px; border-radius:4px; }
 
-    /* ── Typography ─────────────────────────────────────────────────────────── */
-    h1, h2, h3, h4 {
-      font-family: var(--font-head);
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-    }
+    /* ─── Scroll Reveal ────────────────────────────────────────────────────── */
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity:1; transform:none; }
+    .d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s} .d4{transition-delay:.32s} .d5{transition-delay:.40s}
+    @media (prefers-reduced-motion:reduce) { .reveal { opacity:1; transform:none; transition:none; } }
 
-    /* ── Focus Styles (WCAG 2.1 AA) ────────────────────────────────────────── */
-    :focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-      border-radius: 4px;
-    }
+    /* ─── Layout ───────────────────────────────────────────────────────────── */
+    .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 28px; }
 
-    /* ── Layout ─────────────────────────────────────────────────────────────── */
-    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--sp-3); }
-    .section   { padding: var(--sp-8) 0; }
-
-    /* ── Scroll Reveal ──────────────────────────────────────────────────────── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.65s ease, transform 0.65s ease;
+    /* ─── Label chip ───────────────────────────────────────────────────────── */
+    .chip {
+      display: inline-flex; align-items:center; gap:7px;
+      font-size:.72rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+      color: var(--amber); margin-bottom:20px;
     }
-    .reveal.visible { opacity: 1; transform: none; }
-    .reveal-d1 { transition-delay: 0.08s; }
-    .reveal-d2 { transition-delay: 0.16s; }
-    .reveal-d3 { transition-delay: 0.24s; }
-    .reveal-d4 { transition-delay: 0.32s; }
-    .reveal-d5 { transition-delay: 0.40s; }
+    .chip::before { content:''; display:block; width:18px; height:1px; background:var(--amber); }
 
-    @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
+    /* ─── Buttons ──────────────────────────────────────────────────────────── */
+    .btn {
+      display:inline-flex; align-items:center; gap:10px;
+      font-family:var(--font-body); font-weight:600; font-size:.95rem;
+      padding:14px 26px; border-radius:9px; border:none;
+      cursor:pointer; text-decoration:none; transition:all .2s;
+      min-height:48px; white-space:nowrap;
     }
+    .btn-amber {
+      background: var(--amber); color: #0C0A09;
+    }
+    .btn-amber:hover { background:var(--amber-light); transform:translateY(-2px); box-shadow:0 8px 28px rgba(245,158,11,.3); }
+    .btn-amber:active { transform:translateY(0); }
+    .btn-outline {
+      background:transparent; color:var(--text-muted);
+      border:1px solid var(--border);
+    }
+    .btn-outline:hover { color:var(--text); border-color:rgba(255,255,255,.18); }
 
-    /* ── Buttons ────────────────────────────────────────────────────────────── */
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--accent);
-      color: #030818;
-      font-family: var(--font-head);
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 14px 28px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      min-height: 48px; /* touch target */
-    }
-    .btn-primary:hover {
-      background: #93C5FD;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(96, 165, 250, 0.25);
-    }
-    .btn-primary:active { transform: translateY(0); }
-
-    .btn-ghost {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      color: var(--text-muted);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      padding: 12px 20px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      text-decoration: none;
-      transition: color 0.2s, border-color 0.2s;
-      min-height: 48px; /* touch target */
-    }
-    .btn-ghost:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.2); }
-
-    /* ── Section Label ──────────────────────────────────────────────────────── */
-    .label {
-      display: block;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: var(--sp-2);
-    }
-
-    /* ══════════════════════════════════════════════════════════════════════════
-       NAVIGATION
-    ══════════════════════════════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════════════════════════════════════
+       NAV
+    ════════════════════════════════════════════════════════════════════════ */
     .site-header {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 200;
-      width: calc(100% - 48px);
-      max-width: 900px;
+      position:fixed; top:14px; left:50%; transform:translateX(-50%);
+      z-index:200; width:calc(100% - 48px); max-width:960px;
     }
-
-    .nav-inner {
-      background: rgba(7, 13, 26, 0.82);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: border-color 0.3s;
+    .nav-pill {
+      background:rgba(18,14,10,.85);
+      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      border:1px solid var(--border);
+      border-radius:100px;
+      padding:8px 8px 8px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      transition:border-color .3s;
     }
-    .nav-inner.scrolled { border-color: rgba(255, 255, 255, 0.11); }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
+    .nav-pill.scrolled { border-color:rgba(245,158,11,.15); }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
     .nav-logo-mark {
-      width: 30px;
-      height: 30px;
-      min-width: 30px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width:28px; height:28px; min-width:28px;
+      background:var(--amber); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
     }
-    .nav-logo-text {
-      font-family: var(--font-head);
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--text);
-      letter-spacing: -0.03em;
+    .nav-logo-name { font-family:var(--font-display); font-weight:800; font-size:1rem; color:var(--text); letter-spacing:-.01em; }
+    .nav-links { display:flex; align-items:center; gap:2px; }
+    .nav-link { color:var(--text-muted); font-size:.82rem; padding:7px 13px; border-radius:100px; text-decoration:none; transition:color .2s, background .2s; }
+    .nav-link:hover { color:var(--text); background:rgba(255,255,255,.06); }
+    .nav-dl {
+      background:var(--amber); color:#0C0A09;
+      font-weight:700; font-size:.8rem;
+      padding:9px 18px; border-radius:100px;
+      text-decoration:none; display:flex; align-items:center; gap:7px;
+      transition:background .2s; min-height:38px;
     }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.875rem;
-      padding: 8px 14px;
-      border-radius: 8px;
-      transition: color 0.2s, background 0.2s;
-      white-space: nowrap;
-    }
-    .nav-link:hover { color: var(--text); background: rgba(255, 255, 255, 0.05); }
-
-    .nav-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: #030818;
-      font-family: var(--font-head);
-      font-weight: 700;
-      font-size: 0.82rem;
-      padding: 8px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.2s;
-      min-height: 36px;
-    }
-    .nav-cta:hover { background: #93C5FD; }
-
+    .nav-dl:hover { background:var(--amber-light); }
     /* Hamburger */
-    .nav-hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      width: 44px;
-      height: 44px;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.2s;
-    }
-    .nav-hamburger:hover { background: rgba(255, 255, 255, 0.06); }
-    .nav-hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text-muted);
-      border-radius: 2px;
-      transition: transform 0.25s, opacity 0.25s;
-    }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-    .nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-ham { display:none; flex-direction:column; justify-content:center; gap:5px; width:44px; height:44px; background:transparent; border:none; cursor:pointer; padding:10px; border-radius:100px; transition:background .2s; }
+    .nav-ham:hover { background:rgba(255,255,255,.06); }
+    .nav-ham span { display:block; width:20px; height:1.5px; background:var(--text-muted); border-radius:2px; transition:transform .25s, opacity .25s; }
+    .nav-ham[aria-expanded="true"] span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+    .nav-ham[aria-expanded="true"] span:nth-child(2) { opacity:0; }
+    .nav-ham[aria-expanded="true"] span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
+    .nav-mobile { display:none; position:absolute; top:calc(100% + 8px); left:0; right:0; background:rgba(18,14,10,.97); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid var(--border); border-radius:20px; padding:16px; flex-direction:column; gap:4px; }
+    .nav-mobile.open { display:flex; }
+    .nav-mobile .nav-link { font-size:.95rem; padding:12px 16px; min-height:44px; display:flex; align-items:center; border-radius:12px; }
+    .nav-mobile .nav-dl { margin-top:8px; justify-content:center; font-size:.9rem; padding:14px; border-radius:12px; min-height:48px; }
 
-    /* Mobile drawer */
-    .nav-mobile {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 0;
-      right: 0;
-      background: rgba(7, 13, 26, 0.97);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: var(--sp-3);
-      flex-direction: column;
-      gap: var(--sp-1);
-    }
-    .nav-mobile.open { display: flex; }
-    .nav-mobile .nav-link {
-      font-size: 1rem;
-      padding: 12px 16px;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-    }
-    .nav-mobile .nav-cta {
-      margin-top: var(--sp-1);
-      justify-content: center;
-      font-size: 1rem;
-      padding: 14px;
-      min-height: 48px;
-    }
-
-    /* ══════════════════════════════════════════════════════════════════════════
-       HERO
-    ══════════════════════════════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════════════════════════════════════
+       HERO — Editorial split layout
+    ════════════════════════════════════════════════════════════════════════ */
     #hero {
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 140px var(--sp-3) 100px;
-      position: relative;
-      overflow: hidden;
+      min-height:100svh;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      align-items:center;
+      gap:64px;
+      padding:140px 28px 100px;
+      max-width:var(--max-w);
+      margin:0 auto;
+      position:relative;
     }
 
-    /* Amber warm glow */
-    #hero::after {
-      content: '';
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -60%);
-      width: 640px;
-      height: 420px;
-      background: radial-gradient(ellipse, rgba(245, 158, 11, 0.09) 0%, transparent 70%);
-      pointer-events: none;
+    /* Ambient glow */
+    #hero::before {
+      content:'';
+      position:fixed; top:0; left:0; right:0; bottom:0;
+      background:
+        radial-gradient(ellipse 60% 50% at 10% 20%, rgba(245,158,11,.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 80% 70%, rgba(245,158,11,.04) 0%, transparent 60%);
+      pointer-events:none; z-index:0;
     }
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent-glow);
-      border: 1px solid var(--accent-border);
-      color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 100px;
-      margin-bottom: var(--sp-4);
-      letter-spacing: 0.03em;
-      position: relative;
-      z-index: 1;
+    .hero-left { position:relative; z-index:1; }
+
+    .hero-tag {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--amber-glow); border:1px solid var(--amber-border);
+      color:var(--amber); font-size:.75rem; font-weight:500;
+      padding:5px 14px; border-radius:100px; margin-bottom:32px;
+      letter-spacing:.04em;
     }
-    .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      min-width: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: blink 2.2s infinite;
-    }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+    .hero-tag-dot { width:5px; height:5px; min-width:5px; background:var(--amber); border-radius:50%; animation:blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
     .hero-h1 {
-      font-size: clamp(2.8rem, 8vw, 6.2rem);
-      font-weight: 900;
-      color: var(--text);
-      letter-spacing: -0.045em;
-      line-height: 1.0;
-      margin-bottom: var(--sp-2);
-      max-width: 880px;
-      position: relative;
-      z-index: 1;
+      font-family:var(--font-display);
+      font-size:clamp(3rem, 5.5vw, 5.5rem);
+      font-weight:900;
+      line-height:.98;
+      letter-spacing:-.03em;
+      color:var(--text);
+      margin-bottom:24px;
     }
-    .hero-h1 .accent { color: var(--accent); }
+    .hero-h1 em { font-style:italic; color:var(--amber); }
+    .hero-h1 .line-muted { color:var(--text-muted); }
 
-    .hero-slogan {
-      font-family: var(--font-head);
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      font-weight: 400;
-      color: var(--text-muted);
-      margin-bottom: var(--sp-3);
-      letter-spacing: -0.01em;
-      position: relative;
-      z-index: 1;
+    .hero-sub {
+      font-size:1.05rem;
+      color:var(--text-muted);
+      line-height:1.75;
+      max-width:420px;
+      margin-bottom:36px;
     }
 
-    .hero-desc {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 500px;
-      margin: 0 auto var(--sp-5);
-      line-height: 1.75;
-      position: relative;
-      z-index: 1;
-    }
+    .hero-cta { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:44px; }
 
-    .hero-cta {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-2);
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: var(--sp-5);
-      position: relative;
-      z-index: 1;
-    }
+    .hero-trust { display:flex; flex-direction:column; gap:10px; }
+    .trust-row { display:flex; align-items:center; gap:8px; color:var(--text-dim); font-size:.8rem; }
+    .trust-row svg { color:var(--amber); flex-shrink:0; }
 
-    .hero-trust {
-      display: flex;
-      align-items: center;
-      gap: var(--sp-3);
-      justify-content: center;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
-    }
-    .trust-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      color: var(--text-dim);
-      font-size: 0.8rem;
-    }
-    .trust-icon { color: var(--accent); flex-shrink: 0; }
+    /* Right: Terminal / mockup */
+    .hero-right { position:relative; z-index:1; }
 
-    /* App mockup */
-    .hero-mockup {
-      margin-top: var(--sp-8);
-      width: 100%;
-      max-width: 820px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.04);
-      position: relative;
-      z-index: 1;
+    .hero-screen {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.04),
+        0 32px 80px rgba(0,0,0,.6),
+        0 0 80px rgba(245,158,11,.06);
     }
-    .mockup-bar {
-      background: #0A1225;
-      border-bottom: 1px solid var(--border);
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .screen-bar {
+      background:#1A1410;
+      border-bottom:1px solid var(--border);
+      padding:12px 16px;
+      display:flex; align-items:center; gap:8px;
     }
-    .mockup-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-    .mockup-dot.r { background: #FF5F57; }
-    .mockup-dot.y { background: #FFBD2E; }
-    .mockup-dot.g { background: #28C840; }
-    .mockup-title {
-      flex: 1;
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--text-dim);
-      font-family: var(--font-head);
-      font-weight: 500;
-      margin-right: 40px;
-    }
-    .mockup-body {
-      padding: var(--sp-3) var(--sp-3);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .mockup-card {
-      background: #0A1225;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: var(--sp-2);
-    }
-    .mockup-card-label { font-size: 0.68rem; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.09em; }
-    .mockup-card-value { font-family: var(--font-head); font-weight: 700; font-size: 1.35rem; color: var(--text); }
-    .mockup-card-sub   { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
-    .mockup-card.hi    { border-color: var(--accent-border); }
-    .mockup-card.hi .mockup-card-value { color: var(--accent); }
-    .mockup-log {
-      grid-column: 1 / -1;
-      background: #06101E;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.73rem;
-      line-height: 1.7;
-      text-align: left;
-    }
-    .ll  { display: block; }
-    .lbl { color: var(--accent); }
-    .lam { color: #F59E0B; }
-    .ldm { color: var(--text-dim); }
+    .dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+    .dot-r{background:#FF5F57} .dot-y{background:#FFBD2E} .dot-g{background:#28C840}
+    .screen-title { flex:1; text-align:center; font-size:.75rem; color:var(--text-dim); font-family:var(--font-display); margin-right:40px; }
 
-    /* ══════════════════════════════════════════════════════════════════════════
+    .screen-body { padding:24px; }
+
+    /* Stats row */
+    .stats-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+    .stat-card {
+      background:var(--bg-card2); border:1px solid var(--border);
+      border-radius:10px; padding:14px 16px;
+    }
+    .stat-card.hi { border-color:var(--amber-border); }
+    .stat-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-dim); margin-bottom:5px; }
+    .stat-val { font-family:var(--font-display); font-weight:800; font-size:1.6rem; color:var(--text); line-height:1; }
+    .stat-card.hi .stat-val { color:var(--amber); }
+    .stat-sub { font-size:.7rem; color:var(--text-muted); margin-top:4px; }
+
+    /* Terminal log */
+    .terminal {
+      background:#080603;
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:14px 16px;
+      font-family:'Courier New', monospace;
+      font-size:.72rem;
+      line-height:1.75;
+    }
+    .t { display:block; }
+    .t-am { color:var(--amber); }
+    .t-gr { color:#6EE7B7; }
+    .t-dm { color:var(--text-dim); }
+    .t-wh { color:var(--text-muted); }
+
+    /* Progress bar */
+    .prog-wrap { margin-top:14px; }
+    .prog-label { display:flex; justify-content:space-between; font-size:.7rem; color:var(--text-muted); margin-bottom:6px; }
+    .prog-bar { height:3px; background:var(--bg-card2); border-radius:3px; overflow:hidden; }
+    .prog-fill { height:100%; width:52%; background:linear-gradient(90deg, var(--amber-dark), var(--amber)); border-radius:3px; animation:prog 3s ease-in-out infinite alternate; }
+    @keyframes prog { from{width:48%} to{width:58%} }
+
+    /* ════════════════════════════════════════════════════════════════════════
+       NUMBERS BAR
+    ════════════════════════════════════════════════════════════════════════ */
+    #numbers {
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      background:var(--bg-warm);
+      padding:48px 0;
+    }
+    .numbers-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); }
+    .num-cell {
+      background:var(--bg-warm);
+      padding:32px 40px;
+      text-align:center;
+    }
+    .num-big {
+      font-family:var(--font-display);
+      font-size:clamp(2.5rem,4vw,3.8rem);
+      font-weight:900;
+      color:var(--amber);
+      line-height:1;
+      margin-bottom:8px;
+      letter-spacing:-.03em;
+    }
+    .num-label { font-size:.85rem; color:var(--text-muted); line-height:1.5; }
+
+    /* ════════════════════════════════════════════════════════════════════════
        PROBLEM
-    ══════════════════════════════════════════════════════════════════════════ */
-    #problem {
-      padding: var(--sp-8) 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(180deg, var(--bg) 0%, #060F1C 50%, var(--bg) 100%);
-    }
-    .problem-inner { text-align: center; max-width: 700px; margin: 0 auto; }
-
+    ════════════════════════════════════════════════════════════════════════ */
+    #problem { padding:130px 0; }
+    .problem-layout { display:grid; grid-template-columns:1fr 1fr; gap:96px; align-items:center; }
     .problem-h2 {
-      font-size: clamp(2rem, 5vw, 3.6rem);
-      font-weight: 800;
-      margin-bottom: var(--sp-3);
-      letter-spacing: -0.04em;
+      font-family:var(--font-display);
+      font-size:clamp(2.2rem,4vw,3.6rem);
+      font-weight:800;
+      line-height:1.1;
+      letter-spacing:-.03em;
+      margin-bottom:28px;
     }
-    .strike { text-decoration: line-through; color: var(--text-muted); }
-
-    .problem-p {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      line-height: 1.8;
-      margin-bottom: var(--sp-2);
-    }
+    .problem-h2 s { text-decoration-color:var(--amber); color:var(--text-muted); }
+    .problem-p { font-size:1rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px; }
     .problem-stat {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      padding: 10px 20px;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      margin-top: var(--sp-4);
+      display:inline-flex; align-items:center; gap:10px;
+      background:var(--amber-glow); border:1px solid var(--amber-border);
+      border-radius:100px; padding:9px 18px;
+      font-size:.85rem; color:var(--amber); margin-top:24px;
+      font-weight:500;
     }
-    .problem-stat strong { color: var(--accent); }
 
-    /* ══════════════════════════════════════════════════════════════════════════
+    /* Right side: chaos visual */
+    .chaos-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+    }
+    .chaos-item {
+      aspect-ratio:1;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:var(--bg-card);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.6rem; color:var(--text-dim); font-family:monospace;
+      transition:all .3s;
+      overflow:hidden;
+      position:relative;
+    }
+    .chaos-item.bad::after {
+      content:'';
+      position:absolute; inset:0;
+      background:rgba(239,68,68,.12);
+      border-color:rgba(239,68,68,.3);
+    }
+    .chaos-item.bad { border-color:rgba(239,68,68,.25); }
+    .chaos-item.ok { border-color:rgba(245,158,11,.2); }
+    .chaos-item.ok::after { content:''; position:absolute; inset:0; background:rgba(245,158,11,.06); }
+    .chaos-item.star { border-color:var(--amber-border); }
+    .chaos-item.star::after { content:''; position:absolute; inset:0; background:var(--amber-glow); }
+    .chaos-label { position:relative; z-index:1; font-size:.55rem; text-align:center; padding:4px; }
+
+    /* ════════════════════════════════════════════════════════════════════════
        HOW IT WORKS
-    ══════════════════════════════════════════════════════════════════════════ */
-    #how { padding: var(--sp-8) 0; }
-
+    ════════════════════════════════════════════════════════════════════════ */
+    #how { padding:130px 0; background:var(--bg-warm); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .how-top { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:72px; }
     .how-h2 {
-      font-size: clamp(1.9rem, 4vw, 3rem);
-      font-weight: 800;
-      margin-bottom: var(--sp-6);
-      text-align: center;
+      font-family:var(--font-display);
+      font-size:clamp(2rem,4vw,3.2rem);
+      font-weight:800;
+      letter-spacing:-.03em;
+      max-width:420px;
+      line-height:1.1;
     }
+    .how-sub { font-size:1rem; color:var(--text-muted); max-width:280px; text-align:right; line-height:1.7; }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      position: relative;
-    }
-    .steps::before {
-      content: '';
-      position: absolute;
-      top: 68px;
-      left: 17%;
-      right: 17%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent-border), var(--accent-border), transparent);
-      pointer-events: none;
-    }
-
+    .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
     .step {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: var(--sp-5) var(--sp-4);
-      text-align: center;
-      transition: border-color 0.3s, transform 0.3s;
-      cursor: default;
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      padding:36px 28px;
+      position:relative;
+      transition:border-color .3s, transform .3s;
+      cursor:default;
     }
-    .step:hover { border-color: var(--border-hover); transform: translateY(-4px); }
-    .step:first-child { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
-    .step:last-child  { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
-
-    .step-icon {
-      width: 52px;
-      height: 52px;
-      background: var(--bg-card2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto var(--sp-3);
-    }
+    .step:hover { border-color:var(--amber-border); transform:translateY(-4px); }
     .step-num {
-      width: 28px;
-      height: 28px;
-      background: var(--accent-glow);
-      border: 1.5px solid var(--accent-border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-head);
-      font-weight: 800;
-      font-size: 0.78rem;
-      color: var(--accent);
-      margin: 0 auto var(--sp-2);
+      font-family:var(--font-display);
+      font-size:4rem; font-weight:900;
+      color:var(--bg-card2);
+      line-height:1;
+      margin-bottom:16px;
+      letter-spacing:-.04em;
+      -webkit-text-stroke:1px var(--border);
     }
-    .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
-    .step p  { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
+    .step:hover .step-num { color:var(--amber-glow); -webkit-text-stroke-color:var(--amber-border); }
+    .step-icon {
+      width:44px; height:44px;
+      background:var(--bg-card2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:20px;
+    }
+    .step h3 { font-family:var(--font-display); font-size:1.15rem; font-weight:700; margin-bottom:10px; }
+    .step p  { font-size:.875rem; color:var(--text-muted); line-height:1.65; }
     .step-tag {
-      display: inline-block;
-      margin-top: var(--sp-2);
-      font-size: 0.7rem;
-      color: var(--accent);
-      background: var(--accent-glow);
-      border: 1px solid var(--accent-border);
-      padding: 3px 10px;
-      border-radius: 100px;
+      display:inline-block; margin-top:16px;
+      font-size:.68rem; color:var(--amber);
+      background:var(--amber-glow); border:1px solid var(--amber-border);
+      padding:3px 10px; border-radius:100px;
     }
 
-    /* ══════════════════════════════════════════════════════════════════════════
-       FEATURES
-    ══════════════════════════════════════════════════════════════════════════ */
-    #features {
-      padding: var(--sp-8) 0;
-      border-top: 1px solid var(--border);
+    /* ════════════════════════════════════════════════════════════════════════
+       FEATURES — BENTO GRID
+    ════════════════════════════════════════════════════════════════════════ */
+    #features { padding:130px 0; }
+    .features-intro { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; }
+    .features-h2 {
+      font-family:var(--font-display);
+      font-size:clamp(2rem,4vw,3.2rem);
+      font-weight:800; letter-spacing:-.03em; line-height:1.1;
     }
-    .features-header { text-align: center; margin-bottom: var(--sp-6); }
-    .features-h2     { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 800; }
-    .features-sub    { font-size: 1.05rem; color: var(--text-muted); margin-top: 12px; }
+    .features-sub { font-size:1rem; color:var(--text-muted); max-width:300px; text-align:right; line-height:1.7; }
 
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--sp-2);
+    /* Bento grid */
+    .bento {
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      grid-auto-rows:minmax(100px,auto);
+      gap:12px;
     }
 
-    .feat {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: var(--sp-4) var(--sp-3);
-      transition: border-color 0.3s, transform 0.3s, background 0.3s;
-      cursor: default;
+    .bento-card {
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      padding:32px 28px;
+      transition:border-color .3s, transform .25s;
+      cursor:default;
+      overflow:hidden;
+      position:relative;
     }
-    .feat:hover { border-color: var(--border-hover); transform: translateY(-3px); background: #08122A; }
-    .feat.hi    { background: linear-gradient(135deg, #08112A, #050E20); border-color: var(--accent-border); }
-    .feat.hi:hover { border-color: rgba(96, 165, 250, 0.45); }
+    .bento-card:hover { border-color:var(--amber-border); transform:translateY(-3px); }
 
-    .feat-icon {
-      width: 44px;
-      height: 44px;
-      background: var(--bg-card2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: var(--sp-2);
+    /* Sizes */
+    .b-1 { grid-column:span 7; grid-row:span 2; }
+    .b-2 { grid-column:span 5; }
+    .b-3 { grid-column:span 5; }
+    .b-4 { grid-column:span 4; }
+    .b-5 { grid-column:span 4; }
+    .b-6 { grid-column:span 4; }
+
+    .bento-card.hero-card {
+      background:linear-gradient(135deg, #1A1308 0%, #0E0B06 100%);
+      border-color:var(--amber-border);
     }
-    .feat.hi .feat-icon { background: var(--accent-glow); border-color: var(--accent-border); }
+    .bento-card.hero-card::before {
+      content:'';
+      position:absolute; top:0; right:0;
+      width:240px; height:240px;
+      background:radial-gradient(circle, rgba(245,158,11,.12) 0%, transparent 70%);
+      pointer-events:none;
+    }
 
-    .feat h3 { font-size: 0.98rem; font-weight: 700; margin-bottom: 8px; }
-    .feat p  { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+    .bento-icon {
+      width:42px; height:42px;
+      background:var(--bg-card2); border:1px solid var(--border);
+      border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:20px;
+    }
+    .bento-card.hero-card .bento-icon { background:var(--amber-glow); border-color:var(--amber-border); }
 
-    /* ══════════════════════════════════════════════════════════════════════════
-       PHILOSOPHY
-    ══════════════════════════════════════════════════════════════════════════ */
+    .bento-card h3 { font-family:var(--font-display); font-size:1.05rem; font-weight:700; margin-bottom:10px; }
+    .bento-card p  { font-size:.86rem; color:var(--text-muted); line-height:1.7; }
+
+    /* Hero card big text */
+    .bento-card.hero-card h3 { font-size:1.4rem; color:var(--amber); }
+    .bento-card.hero-card p  { font-size:.95rem; max-width:380px; }
+
+    /* Privacy badge */
+    .privacy-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--amber-glow); border:1px solid var(--amber-border);
+      border-radius:100px; padding:6px 14px; margin-top:20px;
+      font-size:.78rem; color:var(--amber); font-weight:500;
+    }
+
+    /* Mini stats inside bento */
+    .bento-stat {
+      font-family:var(--font-display);
+      font-size:2.8rem; font-weight:900;
+      color:var(--amber); line-height:1; letter-spacing:-.04em;
+      margin:12px 0 6px;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════════
+       PHILOSOPHY — Full-width editorial
+    ════════════════════════════════════════════════════════════════════════ */
     #philosophy {
-      padding: var(--sp-8) 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      padding:140px 0;
+      border-top:1px solid var(--border);
+      background:var(--bg-warm);
+      text-align:center;
+      position:relative; overflow:hidden;
     }
     #philosophy::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 800px; height: 500px;
-      background: radial-gradient(ellipse, rgba(245, 158, 11, 0.055) 0%, transparent 70%);
-      pointer-events: none;
+      content:'';
+      position:absolute; top:50%; left:50%;
+      transform:translate(-50%,-50%);
+      width:700px; height:400px;
+      background:radial-gradient(ellipse, rgba(245,158,11,.06) 0%, transparent 70%);
+      pointer-events:none;
     }
-
-    .phil-rule {
-      width: 48px;
-      height: 2px;
-      background: var(--accent);
-      border-radius: 2px;
-      margin: 0 auto var(--sp-5);
+    .phil-eyebrow {
+      font-family:var(--font-display);
+      font-style:italic;
+      font-size:.95rem;
+      color:var(--amber);
+      margin-bottom:28px;
+      position:relative; z-index:1;
     }
     .phil-quote {
-      font-family: var(--font-head);
-      font-size: clamp(1.5rem, 4vw, 2.7rem);
-      font-weight: 700;
-      line-height: 1.25;
-      letter-spacing: -0.03em;
-      color: var(--text);
-      max-width: 740px;
-      margin: 0 auto var(--sp-4);
-      position: relative;
-      z-index: 1;
+      font-family:var(--font-display);
+      font-size:clamp(1.8rem,4.5vw,3.2rem);
+      font-weight:800;
+      line-height:1.2;
+      letter-spacing:-.03em;
+      color:var(--text);
+      max-width:820px;
+      margin:0 auto 40px;
+      position:relative; z-index:1;
     }
-    .phil-quote .hi { color: var(--accent); }
-
+    .phil-quote em { font-style:italic; color:var(--amber); }
     .phil-body {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 520px;
-      margin: 0 auto;
-      line-height: 1.8;
-      position: relative;
-      z-index: 1;
+      font-size:1.05rem;
+      color:var(--text-muted);
+      max-width:500px;
+      margin:0 auto 56px;
+      line-height:1.8;
+      position:relative; z-index:1;
     }
-
-    .phil-manifesto {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--sp-4);
-      max-width: 800px;
-      margin: var(--sp-6) auto 0;
-      text-align: left;
-      position: relative;
-      z-index: 1;
+    .phil-line {
+      width:1px; height:60px; background:var(--amber-border);
+      margin:0 auto 56px;
+      position:relative; z-index:1;
     }
-    .man-item h4 { font-size: 0.88rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
-    .man-item p  { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
+    .phil-three {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1px; background:var(--border);
+      max-width:840px; margin:0 auto;
+      position:relative; z-index:1;
+    }
+    .phil-cell { background:var(--bg-warm); padding:36px 32px; text-align:left; }
+    .phil-cell h4 { font-family:var(--font-display); font-size:.95rem; font-weight:700; color:var(--amber); margin-bottom:10px; }
+    .phil-cell p  { font-size:.84rem; color:var(--text-muted); line-height:1.7; }
 
-    /* ══════════════════════════════════════════════════════════════════════════
+    /* ════════════════════════════════════════════════════════════════════════
        PRICING
-    ══════════════════════════════════════════════════════════════════════════ */
-    #pricing {
-      padding: var(--sp-8) 0;
-      border-top: 1px solid var(--border);
-    }
-    .pricing-header { text-align: center; margin-bottom: var(--sp-6); }
-    .pricing-h2     { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 800; }
-    .pricing-sub    { font-size: 1rem; color: var(--text-muted); margin-top: 12px; }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--sp-3);
-      max-width: 760px;
-      margin: 0 auto;
-    }
+    ════════════════════════════════════════════════════════════════════════ */
+    #pricing { padding:130px 0; border-top:1px solid var(--border); }
+    .pricing-top { text-align:center; margin-bottom:56px; }
+    .pricing-h2 { font-family:var(--font-display); font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.03em; }
+    .pricing-sub { font-size:1rem; color:var(--text-muted); margin-top:12px; }
+    .pricing-cards { display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:780px; margin:0 auto; }
 
     .price-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: var(--sp-5) var(--sp-4);
+      background:var(--bg-card);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      padding:40px 36px;
     }
     .price-card.pro {
-      background: linear-gradient(135deg, #08112A, #050E20);
-      border-color: var(--accent-border);
-      position: relative;
-      overflow: hidden;
+      background:linear-gradient(135deg, #1A1308, #0E0B06);
+      border-color:var(--amber-border);
+      position:relative; overflow:hidden;
     }
     .price-card.pro::after {
-      content: 'Coming Soon';
-      position: absolute;
-      top: 20px;
-      right: -28px;
-      background: var(--accent);
-      color: #030818;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 4px 40px;
-      transform: rotate(45deg);
-      letter-spacing: 0.05em;
-      pointer-events: none;
+      content:'Coming Soon';
+      position:absolute; top:20px; right:-30px;
+      background:var(--amber); color:#0C0A09;
+      font-size:.65rem; font-weight:700; padding:4px 44px;
+      transform:rotate(45deg); letter-spacing:.06em; pointer-events:none;
     }
-
-    .price-tier {
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: var(--sp-2);
-    }
-    .pro .price-tier { color: var(--accent); }
-
-    .price-amount {
-      font-family: var(--font-head);
-      font-size: 3rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      margin-bottom: 4px;
-    }
-    .pro .price-amount { color: var(--accent); }
-    .price-note { font-size: 0.83rem; color: var(--text-dim); margin-bottom: var(--sp-4); }
-
-    .price-feats { list-style: none; margin-bottom: var(--sp-4); }
-    .price-feats li {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      padding: 7px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    }
-    .price-feats li:last-child { border-bottom: none; }
-    .chk { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-
+    .price-tier { font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px; }
+    .pro .price-tier { color:var(--amber); }
+    .price-amount { font-family:var(--font-display); font-size:3.2rem; font-weight:900; letter-spacing:-.04em; margin-bottom:4px; }
+    .pro .price-amount { color:var(--amber); }
+    .price-note { font-size:.82rem; color:var(--text-dim); margin-bottom:28px; }
+    .price-feats { list-style:none; margin-bottom:32px; }
+    .price-feats li { display:flex; align-items:flex-start; gap:10px; font-size:.88rem; color:var(--text-muted); padding:7px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+    .price-feats li:last-child { border-bottom:none; }
+    .chk { color:var(--amber); flex-shrink:0; margin-top:1px; }
     .price-btn {
-      display: block;
-      width: 100%;
-      text-align: center;
-      padding: 13px;
-      border-radius: 9px;
-      font-family: var(--font-head);
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display:flex; align-items:center; justify-content:center;
+      width:100%; padding:14px;
+      border-radius:9px; font-weight:700; font-size:.95rem;
+      cursor:pointer; text-decoration:none; transition:all .2s;
+      min-height:48px; font-family:var(--font-body);
     }
-    .price-btn.prim { background: var(--accent); color: #030818; }
-    .price-btn.prim:hover { background: #93C5FD; transform: translateY(-1px); }
-    .price-btn.sec {
-      background: transparent;
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-    }
-    .price-btn.sec:hover { border-color: rgba(255, 255, 255, 0.2); color: var(--text); }
+    .price-btn.prim { background:var(--amber); color:#0C0A09; border:none; }
+    .price-btn.prim:hover { background:var(--amber-light); transform:translateY(-1px); }
+    .price-btn.sec { background:transparent; color:var(--text-muted); border:1px solid var(--border); }
+    .price-btn.sec:hover { border-color:rgba(255,255,255,.2); color:var(--text); }
 
-    /* ══════════════════════════════════════════════════════════════════════════
-       DOWNLOAD CTA
-    ══════════════════════════════════════════════════════════════════════════ */
+    /* ════════════════════════════════════════════════════════════════════════
+       DOWNLOAD — Full-width dramatic
+    ════════════════════════════════════════════════════════════════════════ */
     #download {
-      padding: var(--sp-8) 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--border);
+      padding:140px 28px;
+      text-align:center;
+      position:relative; overflow:hidden;
+      border-top:1px solid var(--border);
     }
-    .dl-glow {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 500px; height: 300px;
-      background: radial-gradient(ellipse, rgba(245, 158, 11, 0.09) 0%, transparent 70%);
-      pointer-events: none;
+    #download::before {
+      content:'';
+      position:absolute; bottom:0; left:0; right:0; top:0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 100%, rgba(245,158,11,.1) 0%, transparent 60%);
+      pointer-events:none;
     }
+    .dl-eyebrow { font-family:var(--font-display); font-style:italic; color:var(--amber); font-size:.95rem; margin-bottom:24px; position:relative; z-index:1; }
     .dl-h2 {
-      font-size: clamp(2.2rem, 6vw, 4.8rem);
-      font-weight: 900;
-      letter-spacing: -0.045em;
-      margin-bottom: var(--sp-3);
-      position: relative;
-      z-index: 1;
+      font-family:var(--font-display);
+      font-size:clamp(2.5rem,7vw,6rem);
+      font-weight:900; letter-spacing:-.04em; line-height:.95;
+      margin-bottom:24px; position:relative; z-index:1;
     }
-    .dl-sub {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      margin-bottom: var(--sp-5);
-      max-width: 440px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.7;
-      position: relative;
-      z-index: 1;
-    }
-    .dl-btn-wrap { position: relative; z-index: 1; }
-    .dl-note { margin-top: 10px; font-size: 0.78rem; color: var(--text-dim); }
+    .dl-h2 em { font-style:italic; color:var(--amber); }
+    .dl-sub { font-size:1.05rem; color:var(--text-muted); margin-bottom:44px; max-width:420px; margin-left:auto; margin-right:auto; line-height:1.75; position:relative; z-index:1; }
 
-    /* Email signup */
-    .email-signup {
-      max-width: 460px;
-      margin: var(--sp-5) auto 0;
-      position: relative;
-      z-index: 1;
+    .dl-wrap { position:relative; z-index:1; }
+    .dl-note { margin-top:12px; font-size:.78rem; color:var(--text-dim); }
+
+    .email-block {
+      max-width:460px; margin:52px auto 0;
+      position:relative; z-index:1;
     }
-    .email-signup p { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 12px; }
-    .email-form {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
+    .email-block p { font-size:.82rem; color:var(--text-muted); margin-bottom:12px; }
+    .email-row { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+    .email-in {
+      flex:1; min-width:200px; padding:12px 16px;
+      border-radius:9px; background:var(--bg-card); border:1px solid var(--border);
+      color:var(--text); font-size:.9rem; font-family:var(--font-body);
+      outline:none; transition:border-color .2s; min-height:48px;
     }
-    .email-input {
-      flex: 1;
-      min-width: 200px;
-      padding: 12px 16px;
-      border-radius: 9px;
-      background: var(--bg-card2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 0.9rem;
-      font-family: var(--font-body);
-      outline: none;
-      transition: border-color 0.2s;
-      min-height: 48px;
+    .email-in:focus { border-color:var(--amber); }
+    .email-btn {
+      padding:12px 22px; border-radius:9px; background:var(--bg-card);
+      border:1px solid var(--border); color:var(--text-muted);
+      font-family:var(--font-body); font-weight:600; font-size:.9rem;
+      cursor:pointer; transition:all .2s; white-space:nowrap; min-height:48px;
     }
-    .email-input:focus { border-color: var(--accent); }
-    .email-submit {
-      padding: 12px 22px;
-      border-radius: 9px;
-      background: var(--bg-card2);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-family: var(--font-head);
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      white-space: nowrap;
-      min-height: 48px;
-    }
-    .email-submit:hover { border-color: var(--accent-border); color: var(--text); }
-    .email-thanks { display: none; margin-top: 10px; font-size: 0.85rem; color: var(--accent); }
+    .email-btn:hover { border-color:var(--amber-border); color:var(--text); }
+    .email-ok { display:none; margin-top:10px; font-size:.85rem; color:var(--amber); }
 
     .dl-meta {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--sp-2);
-      flex-wrap: wrap;
-      margin-top: var(--sp-4);
-      position: relative;
-      z-index: 1;
+      display:flex; align-items:center; justify-content:center;
+      gap:20px; flex-wrap:wrap; margin-top:44px;
+      position:relative; z-index:1;
     }
-    .dl-meta-item { font-size: 0.8rem; color: var(--text-dim); }
-    .dl-meta-sep  { color: var(--text-dim); }
+    .dl-meta span { font-size:.8rem; color:var(--text-dim); }
+    .dl-meta-sep { color:var(--text-dim); }
 
-    /* ══════════════════════════════════════════════════════════════════════════
+    /* ════════════════════════════════════════════════════════════════════════
        FOOTER
-    ══════════════════════════════════════════════════════════════════════════ */
-    .site-footer { padding: var(--sp-5) 0; }
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: var(--sp-2);
+    ════════════════════════════════════════════════════════════════════════ */
+    .site-footer {
+      border-top:1px solid var(--border);
+      padding:36px 0;
     }
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
+    .footer-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+    .footer-brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .footer-mark {
+      width:26px; height:26px; min-width:26px;
+      background:var(--amber); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
     }
-    .footer-logo-mark {
-      width: 26px; height: 26px; min-width: 26px;
-      background: var(--accent);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .footer-name   { font-family:var(--font-display); font-weight:800; font-size:.95rem; color:var(--text); }
+    .footer-slogan { font-size:.74rem; color:var(--text-dim); }
+    .footer-copy   { font-size:.78rem; color:var(--text-dim); }
+
+    /* ════════════════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════════════════════════════════ */
+    @media (max-width:1024px) {
+      .b-1 { grid-column:span 12; }
+      .b-2, .b-3 { grid-column:span 6; }
+      .b-4, .b-5, .b-6 { grid-column:span 4; }
     }
-    .footer-name   { font-family: var(--font-head); font-weight: 800; font-size: 0.95rem; color: var(--text); }
-    .footer-slogan { font-size: 0.76rem; color: var(--text-dim); }
-    .footer-copy   { font-size: 0.78rem; color: var(--text-dim); }
-
-    /* ══════════════════════════════════════════════════════════════════════════
-       RESPONSIVE — Mobile First
-    ══════════════════════════════════════════════════════════════════════════ */
-    @media (max-width: 900px) {
-      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width:900px) {
+      #hero { grid-template-columns:1fr; gap:48px; min-height:auto; padding-top:120px; }
+      .hero-sub { max-width:100%; }
+      .problem-layout { grid-template-columns:1fr; gap:48px; }
+      .how-top { flex-direction:column; align-items:flex-start; gap:16px; }
+      .how-sub { text-align:left; max-width:100%; }
+      .steps { grid-template-columns:1fr; gap:12px; }
+      .features-intro { flex-direction:column; align-items:flex-start; gap:16px; }
+      .features-sub { text-align:left; }
+      .b-1,.b-2,.b-3 { grid-column:span 12; }
+      .b-4,.b-5,.b-6 { grid-column:span 6; }
+      .phil-three { grid-template-columns:1fr; }
+      .pricing-cards { grid-template-columns:1fr; }
+      .numbers-grid { grid-template-columns:1fr; }
+      .footer-inner { flex-direction:column; text-align:center; align-items:center; }
     }
-
-    @media (max-width: 768px) {
-      :root { --sp-8: 80px; }
-
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-
-      .features-grid { grid-template-columns: 1fr; }
-      .steps {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      .steps::before { display: none; }
-      .step:first-child,
-      .step:last-child { border-radius: var(--radius-lg); }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .phil-manifesto { grid-template-columns: 1fr; gap: var(--sp-3); }
-      .mockup-body { grid-template-columns: 1fr; }
-
-      .site-header { width: calc(100% - 24px); }
-
-      .footer-inner { flex-direction: column; text-align: center; align-items: center; }
+    @media (max-width:768px) {
+      .nav-links { display:none; }
+      .nav-ham { display:flex; }
+      .site-header { width:calc(100% - 24px); }
+      .b-4,.b-5,.b-6 { grid-column:span 12; }
     }
-
-    @media (max-width: 480px) {
-      .hero-cta { flex-direction: column; align-items: stretch; }
-      .btn-primary, .btn-ghost { justify-content: center; }
-      .hero-trust { gap: var(--sp-2); }
+    @media (max-width:480px) {
+      .hero-cta { flex-direction:column; align-items:stretch; }
+      .btn { justify-content:center; }
+      .chaos-grid { grid-template-columns:repeat(3,1fr); }
     }
   </style>
 </head>
-
 <body>
-  <!-- Skip to main content (accessibility) -->
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       HEADER / NAV
-  ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- ── NAV ─────────────────────────────────────────────────────────────── -->
   <header class="site-header" role="banner">
-    <div class="nav-inner" id="nav-inner">
-
-      <a href="#" class="nav-logo" aria-label="Grain — go to top">
+    <div class="nav-pill" id="nav-pill">
+      <a href="#" class="nav-logo" aria-label="Grain home">
         <div class="nav-logo-mark" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path d="M3 13L8 3L13 13" stroke="#030818" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M5.5 9.5H10.5" stroke="#030818" stroke-width="2" stroke-linecap="round"/>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 13L8 3L13 13" stroke="#0C0A09" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5.5 9.5H10.5" stroke="#0C0A09" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </div>
-        <span class="nav-logo-text">Grain</span>
+        <span class="nav-logo-name">Grain</span>
       </a>
-
-      <!-- Desktop links -->
       <nav class="nav-links" aria-label="Main navigation">
         <a href="#how"      class="nav-link">How it works</a>
         <a href="#features" class="nav-link">Features</a>
         <a href="#pricing"  class="nav-link">Pricing</a>
-        <a href="#download" class="nav-cta" aria-label="Download Grain for macOS">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <a href="#download" class="nav-dl" aria-label="Download Grain for macOS">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download
         </a>
       </nav>
-
-      <!-- Mobile hamburger -->
-      <button class="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav" id="hamburger">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+      <button class="nav-ham" aria-label="Toggle menu" aria-expanded="false" aria-controls="mob-nav" id="hamburger">
+        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
     </div>
-
-    <!-- Mobile nav drawer -->
-    <nav class="nav-mobile" id="mobile-nav" aria-label="Mobile navigation">
+    <nav class="nav-mobile" id="mob-nav" aria-label="Mobile navigation">
       <a href="#how"      class="nav-link" data-close>How it works</a>
       <a href="#features" class="nav-link" data-close>Features</a>
       <a href="#pricing"  class="nav-link" data-close>Pricing</a>
-      <a href="#download" class="nav-cta"  data-close aria-label="Download Grain for macOS">
+      <a href="#download" class="nav-dl"   data-close aria-label="Download Grain">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Download for macOS — Free
       </a>
     </nav>
   </header>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       MAIN CONTENT
-  ══════════════════════════════════════════════════════════════════════════ -->
   <main id="main">
 
-    <!-- ── HERO ──────────────────────────────────────────────────────────────── -->
-    <section id="hero" aria-labelledby="hero-headline">
+    <!-- ── HERO ────────────────────────────────────────────────────────────── -->
+    <section id="hero" aria-labelledby="hero-h1">
 
-      <div class="hero-badge reveal" role="status">
-        <span class="hero-badge-dot" aria-hidden="true"></span>
-        Free for macOS · Early Access
+      <div class="hero-left">
+        <div class="hero-tag reveal">
+          <span class="hero-tag-dot" aria-hidden="true"></span>
+          Free · Early Access · macOS
+        </div>
+
+        <h1 class="hero-h1 reveal d1" id="hero-h1">
+          Stop<br>
+          <em>sorting.</em><br>
+          <span class="line-muted">Start shooting.</span>
+        </h1>
+
+        <p class="hero-sub reveal d2">
+          A local AI photo pipeline for macOS. Plug in your SD card,
+          press start — Grain culls, organises, and archives everything
+          automatically. No cloud. No subscription. No compromise.
+        </p>
+
+        <div class="hero-cta reveal d3">
+          <a href="#download" class="btn btn-amber">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download for macOS — Free
+          </a>
+          <a href="#how" class="btn btn-outline">See how it works</a>
+        </div>
+
+        <ul class="hero-trust reveal d4" aria-label="Key benefits">
+          <li class="trust-row">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Photos never leave your Mac — 100% local AI
+          </li>
+          <li class="trust-row">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            No account · No cloud upload · No subscription
+          </li>
+          <li class="trust-row">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            From SD card to archived &amp; culled in minutes
+          </li>
+        </ul>
       </div>
 
-      <h1 class="hero-h1 reveal reveal-d1" id="hero-headline">
-        Stop sorting.<br><span class="accent">Start shooting.</span>
-      </h1>
-
-      <p class="hero-slogan reveal reveal-d2">Grain — Shoot more. Sort less.</p>
-
-      <p class="hero-desc reveal reveal-d3">
-        A local AI photo pipeline for macOS. Plug in your SD card, press start —
-        Grain culls, organises, and archives your photos automatically.
-        No cloud. No subscription. No compromise.
-      </p>
-
-      <div class="hero-cta reveal reveal-d4">
-        <a href="#download" class="btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download for macOS — Free
-        </a>
-        <a href="#how" class="btn-ghost">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
-          See how it works
-        </a>
-      </div>
-
-      <ul class="hero-trust reveal reveal-d5" aria-label="Key product facts">
-        <li class="trust-item">
-          <svg class="trust-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          100% Local AI
-        </li>
-        <li class="trust-item">
-          <svg class="trust-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          No Cloud Upload
-        </li>
-        <li class="trust-item">
-          <svg class="trust-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Free to Download
-        </li>
-        <li class="trust-item">
-          <svg class="trust-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          macOS Native
-        </li>
-      </ul>
-
-      <!-- App UI mockup (decorative) -->
-      <figure class="hero-mockup reveal reveal-d5" aria-hidden="true" role="img" aria-label="Grain app interface showing pipeline progress">
-        <div class="mockup-bar">
-          <span class="mockup-dot r"></span>
-          <span class="mockup-dot y"></span>
-          <span class="mockup-dot g"></span>
-          <span class="mockup-title">Grain</span>
-        </div>
-        <div class="mockup-body">
-          <div class="mockup-card hi">
-            <div class="mockup-card-label">Photos found</div>
-            <div class="mockup-card-value" id="counter">463</div>
-            <div class="mockup-card-sub">68 new · 395 already archived</div>
+      <!-- App window -->
+      <div class="hero-right reveal d2" aria-hidden="true" role="img" aria-label="Grain app interface">
+        <div class="hero-screen">
+          <div class="screen-bar">
+            <span class="dot dot-r"></span>
+            <span class="dot dot-y"></span>
+            <span class="dot dot-g"></span>
+            <span class="screen-title">Grain</span>
           </div>
-          <div class="mockup-card">
-            <div class="mockup-card-label">Estimated time</div>
-            <div class="mockup-card-value">~6 Min</div>
-            <div class="mockup-card-sub">moondream AI · Mac stays awake</div>
-          </div>
-          <div class="mockup-log">
-            <span class="ll lbl">── Grain Pipeline ──────────────────────</span>
-            <span class="ll ldm">→ SD card detected: /Volumes/NO NAME</span>
-            <span class="ll lbl">✓ 68 new photos found (395 archived)</span>
-            <span class="ll lam">  AI culling… 34/68</span>
-            <span class="ll lbl">⭐ TOP: DSC_0042.rw2 — score 94</span>
-            <span class="ll ldm">  KEEP: DSC_0041.rw2 — score 71</span>
-            <span class="ll ldm">  REJECT: DSC_0039.rw2 — blurry</span>
-            <span class="ll lbl">✓ Pipeline complete — 6 min 12 sec</span>
-          </div>
-        </div>
-      </figure>
-    </section>
-
-    <!-- ── PROBLEM ────────────────────────────────────────────────────────────── -->
-    <section id="problem" aria-labelledby="problem-headline">
-      <div class="container">
-        <div class="problem-inner">
-          <span class="label reveal">The real problem</span>
-          <h2 class="problem-h2 reveal reveal-d1" id="problem-headline">
-            You shoot 400 photos.<br>
-            Then <span class="strike">life</span> sorting begins.
-          </h2>
-          <p class="problem-p reveal reveal-d2">
-            You come home excited after a great session. The light was perfect.
-            You got the shot. Then you open Lightroom — and spend the next
-            <strong style="color:var(--text)">three hours</strong> clicking through
-            blurry duplicates, overexposed rejects, and almost-greats.
-          </p>
-          <p class="problem-p reveal reveal-d3">
-            By the end, you're too tired to actually edit. The joy is gone.
-            The best shots are buried. And your SD card is still full.
-          </p>
-          <div class="problem-stat reveal reveal-d4" role="note">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Photographers spend an average of <strong>40% of editing time just culling.</strong>
-            Grain gives that time back.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── HOW IT WORKS ──────────────────────────────────────────────────────── -->
-    <section id="how" class="section" aria-labelledby="how-headline">
-      <div class="container">
-        <span class="label reveal" style="text-align:center;display:block">How it works</span>
-        <h2 class="how-h2 reveal reveal-d1" id="how-headline">Three steps. Zero hassle.</h2>
-
-        <ol class="steps" aria-label="How Grain works">
-          <li class="step reveal reveal-d1">
-            <div class="step-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          <div class="screen-body">
+            <div class="stats-row">
+              <div class="stat-card hi">
+                <div class="stat-label">Photos found</div>
+                <div class="stat-val" id="counter">463</div>
+                <div class="stat-sub">68 new · 395 archived</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-label">Estimated time</div>
+                <div class="stat-val">~6 min</div>
+                <div class="stat-sub">moondream · stays awake</div>
+              </div>
             </div>
-            <div class="step-num" aria-hidden="true">1</div>
+            <div class="terminal">
+              <span class="t t-am">── Grain 1.5.0 ────────────────────</span>
+              <span class="t t-wh">→ SD card: /Volumes/NO NAME</span>
+              <span class="t t-gr">✓ 68 new photos (395 archived)</span>
+              <span class="t t-am">  AI culling… 34 / 68</span>
+              <span class="t t-gr">⭐ TOP: DSC_0042.rw2 — score 94</span>
+              <span class="t t-dm">  KEEP: DSC_0041.rw2 — score 71</span>
+              <span class="t t-dm">  REJECT: DSC_0039.rw2 — blurry</span>
+              <span class="t t-gr">✓ Done — 6 min 12 sec</span>
+            </div>
+            <div class="prog-wrap">
+              <div class="prog-label">
+                <span>Processing</span>
+                <span id="pct">52%</span>
+              </div>
+              <div class="prog-bar" role="progressbar" aria-valuenow="52" aria-valuemin="0" aria-valuemax="100" aria-label="Processing progress">
+                <div class="prog-fill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── NUMBERS ──────────────────────────────────────────────────────────── -->
+    <section id="numbers" aria-label="Key statistics">
+      <div class="wrap">
+        <dl class="numbers-grid">
+          <div class="num-cell reveal">
+            <dt class="num-label">Photos analysed per run</dt>
+            <dd class="num-big">400+</dd>
+          </div>
+          <div class="num-cell reveal d2">
+            <dt class="num-label">Time saved culling</dt>
+            <dd class="num-big">~3h</dd>
+          </div>
+          <div class="num-cell reveal d3">
+            <dt class="num-label">Data sent to cloud</dt>
+            <dd class="num-big">0&thinsp;KB</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ── PROBLEM ──────────────────────────────────────────────────────────── -->
+    <section id="problem" aria-labelledby="problem-h2">
+      <div class="wrap">
+        <div class="problem-layout">
+          <div>
+            <span class="chip reveal">The real problem</span>
+            <h2 class="problem-h2 reveal d1" id="problem-h2">
+              You shoot 400 photos.<br>
+              Then <s>life</s> sorting<br>
+              begins.
+            </h2>
+            <p class="problem-p reveal d2">
+              You come home after a perfect session — the light was right,
+              you got the shot. Then you open Lightroom and spend
+              <strong style="color:var(--text)">three hours</strong> clicking
+              through blurry duplicates, overexposed rejects, and almost-greats.
+            </p>
+            <p class="problem-p reveal d3">
+              By the end you're too tired to edit. The joy is gone. The best
+              shots are buried. And your SD card is still full.
+            </p>
+            <div class="problem-stat reveal d4" role="note">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              40% of editing time is just culling. Grain gives that back.
+            </div>
+          </div>
+
+          <!-- Chaos visual -->
+          <div class="chaos-grid reveal d2" aria-hidden="true" role="img" aria-label="Example of disorganised photo archive before Grain">
+            <!-- 16 photo tiles -->
+            <div class="chaos-item bad"><span class="chaos-label">blurry</span></div>
+            <div class="chaos-item ok"><span class="chaos-label">DSC_0041</span></div>
+            <div class="chaos-item bad"><span class="chaos-label">overexp</span></div>
+            <div class="chaos-item star"><span class="chaos-label">⭐ TOP</span></div>
+            <div class="chaos-item ok"><span class="chaos-label">DSC_0044</span></div>
+            <div class="chaos-item bad"><span class="chaos-label">dupe</span></div>
+            <div class="chaos-item star"><span class="chaos-label">⭐ TOP</span></div>
+            <div class="chaos-item bad"><span class="chaos-label">blurry</span></div>
+            <div class="chaos-item bad"><span class="chaos-label">dupe</span></div>
+            <div class="chaos-item star"><span class="chaos-label">⭐ TOP</span></div>
+            <div class="chaos-item ok"><span class="chaos-label">DSC_0051</span></div>
+            <div class="chaos-item bad"><span class="chaos-label">dark</span></div>
+            <div class="chaos-item ok"><span class="chaos-label">DSC_0053</span></div>
+            <div class="chaos-item bad"><span class="chaos-label">missed</span></div>
+            <div class="chaos-item ok"><span class="chaos-label">DSC_0055</span></div>
+            <div class="chaos-item star"><span class="chaos-label">⭐ TOP</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ────────────────────────────────────────────────────── -->
+    <section id="how" aria-labelledby="how-h2">
+      <div class="wrap">
+        <div class="how-top">
+          <div>
+            <span class="chip reveal">How it works</span>
+            <h2 class="how-h2 reveal d1" id="how-h2">Three steps.<br>Zero hassle.</h2>
+          </div>
+          <p class="how-sub reveal d2">Grain is designed to disappear. You shouldn't have to think about it.</p>
+        </div>
+        <ol class="steps" aria-label="How Grain works in three steps">
+          <li class="step reveal d1">
+            <div class="step-num" aria-hidden="true">01</div>
+            <div class="step-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            </div>
             <h3>Plug in your SD card</h3>
             <p>Grain detects your card automatically. Or point it to any folder on your Mac.</p>
             <span class="step-tag">Auto-detection</span>
           </li>
-
-          <li class="step reveal reveal-d2">
+          <li class="step reveal d2">
+            <div class="step-num" aria-hidden="true">02</div>
             <div class="step-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             </div>
-            <div class="step-num" aria-hidden="true">2</div>
             <h3>Press Start</h3>
-            <p>That's it. Grain culls, analyses, and archives while your Mac stays awake — no babysitting needed.</p>
+            <p>Grain culls, analyses, and archives while your Mac stays awake — no babysitting needed.</p>
             <span class="step-tag">One click</span>
           </li>
-
-          <li class="step reveal reveal-d3">
+          <li class="step reveal d3">
+            <div class="step-num" aria-hidden="true">03</div>
             <div class="step-icon" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <div class="step-num" aria-hidden="true">3</div>
             <h3>Open your archive</h3>
-            <p>Best shots marked TOP. Rejects flagged. AI feedback written. Open Lightroom and start creating.</p>
+            <p>Best shots marked TOP. Rejects flagged. AI feedback written. Open Lightroom and create.</p>
             <span class="step-tag">Ready to edit</span>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- ── FEATURES ──────────────────────────────────────────────────────────── -->
-    <section id="features" aria-labelledby="features-headline">
-      <div class="container">
-        <header class="features-header">
-          <span class="label reveal">What Grain does</span>
-          <h2 class="features-h2 reveal reveal-d1" id="features-headline">Everything. Automatically.</h2>
-          <p class="features-sub reveal reveal-d2">Six things that used to take hours. Now zero effort.</p>
-        </header>
+    <!-- ── FEATURES BENTO ──────────────────────────────────────────────────── -->
+    <section id="features" aria-labelledby="features-h2">
+      <div class="wrap">
+        <div class="features-intro">
+          <div>
+            <span class="chip reveal">What Grain does</span>
+            <h2 class="features-h2 reveal d1" id="features-h2">Everything.<br>Automatically.</h2>
+          </div>
+          <p class="features-sub reveal d2">Six things that used to take hours. Now zero effort.</p>
+        </div>
 
-        <ul class="features-grid" aria-label="Grain features">
+        <ul class="bento" aria-label="Grain features">
 
-          <li class="feat hi reveal reveal-d1">
-            <div class="feat-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <li class="bento-card hero-card b-1 reveal d1">
+            <div class="bento-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
-            <h3>100% Local AI</h3>
-            <p>All analysis runs on your Mac via Ollama. Your photos never leave your machine. No account. No cloud. No data collection. Ever.</p>
+            <h3>100% Local AI — total privacy</h3>
+            <p>All analysis runs on your Mac via Ollama. Your photos never leave your machine. No account required. No cloud upload. No data collection. Ever. Not even metadata.</p>
+            <div class="privacy-badge" aria-label="Privacy guarantee">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Zero network calls during analysis
+            </div>
           </li>
 
-          <li class="feat reveal reveal-d2">
-            <div class="feat-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <li class="bento-card b-2 reveal d2">
+            <div class="bento-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </div>
             <h3>Smart Auto-Culling</h3>
-            <p>Every photo scored on sharpness, exposure, histogram quality, and composition. Top 20% marked as stars. Rejects flagged automatically.</p>
+            <p>Every photo scored on sharpness, exposure, histogram quality, and composition. Top 20% marked as stars.</p>
           </li>
 
-          <li class="feat reveal reveal-d3">
-            <div class="feat-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <li class="bento-card b-3 reveal d3">
+            <div class="bento-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <h3>Time Estimate</h3>
-            <p>Before you start, Grain shows exactly how many new photos it found and how long the run will take. No surprises.</p>
+            <div class="bento-stat" aria-label="Approximately 6 minutes">~6 min</div>
+            <p>Before you start, Grain shows how many new photos and how long it'll take.</p>
           </li>
 
-          <li class="feat reveal reveal-d4">
-            <div class="feat-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          <li class="bento-card b-4 reveal d1">
+            <div class="bento-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>
             </div>
             <h3>Mac Stays Awake</h3>
-            <p>Grain keeps your Mac from sleeping during the pipeline — no more waking up to a half-finished job. Automatically disabled when done.</p>
+            <p>No more waking up to a half-finished job. Grain keeps your Mac from sleeping during the pipeline.</p>
           </li>
 
-          <li class="feat reveal reveal-d5">
-            <div class="feat-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <li class="bento-card b-5 reveal d2">
+            <div class="bento-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             </div>
             <h3>Smart Dedup</h3>
-            <p>Already processed photos are recognised instantly. Run Grain again and it only processes what's new — never duplicates work.</p>
+            <p>Already-processed photos are recognised instantly. Run Grain twice — no duplicate work.</p>
           </li>
 
-          <li class="feat reveal reveal-d1">
-            <div class="feat-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <li class="bento-card b-6 reveal d3">
+            <div class="bento-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
             <h3>HDR Bracketing</h3>
-            <p>Bracket series are detected, merged into HDR, and labelled — all automatically. Publication-ready HDRs without touching software.</p>
+            <p>Bracket series detected, merged, and labelled — automatically. Publication-ready HDRs without touching software.</p>
           </li>
 
         </ul>
       </div>
     </section>
 
-    <!-- ── PHILOSOPHY ────────────────────────────────────────────────────────── -->
-    <section id="philosophy" class="section" aria-labelledby="phil-headline">
-      <div class="container">
-        <div class="phil-rule reveal" aria-hidden="true"></div>
-        <blockquote class="phil-quote reveal reveal-d1" id="phil-headline">
+    <!-- ── PHILOSOPHY ───────────────────────────────────────────────────────── -->
+    <section id="philosophy" aria-labelledby="phil-q">
+      <div class="wrap">
+        <p class="phil-eyebrow reveal">A note on why we built this</p>
+        <blockquote class="phil-quote reveal d1" id="phil-q">
           "The best photo tool is the one<br>
-          <span class="hi">you forget about.</span>"
+          <em>you forget about.</em>"
         </blockquote>
-        <p class="phil-body reveal reveal-d2">
-          We built Grain because we were tired of spending more time managing photos
-          than making them. Photography is about light, moments, and craft —
-          not file management. Grain handles the machine work so you can
-          focus on the human part.
+        <p class="phil-body reveal d2">
+          We built Grain because we were tired of spending more time managing
+          photos than making them. Photography is about light, moments, and
+          craft — not file management.
         </p>
-
-        <dl class="phil-manifesto">
-          <div class="man-item reveal reveal-d2">
+        <div class="phil-line reveal d3" aria-hidden="true"></div>
+        <dl class="phil-three reveal d3">
+          <div class="phil-cell">
             <dt><h4>Private by design</h4></dt>
-            <dd><p>Your photos are personal. They run through local AI only, on your hardware, with zero network calls.</p></dd>
+            <dd><p>Your photos are personal. Local AI only, on your hardware, zero network calls.</p></dd>
           </div>
-          <div class="man-item reveal reveal-d3">
+          <div class="phil-cell">
             <dt><h4>Craft over complexity</h4></dt>
-            <dd><p>One button. One click. No presets to configure, no workflows to build. Grain just works.</p></dd>
+            <dd><p>One button. One click. No presets to configure, no workflows to build.</p></dd>
           </div>
-          <div class="man-item reveal reveal-d4">
+          <div class="phil-cell">
             <dt><h4>Built for film culture</h4></dt>
-            <dd><p>Grain is for photographers who care about the process — from shutter click to final edit.</p></dd>
+            <dd><p>For photographers who care about the process — from shutter click to final edit.</p></dd>
           </div>
         </dl>
       </div>
     </section>
 
-    <!-- ── PRICING ───────────────────────────────────────────────────────────── -->
-    <section id="pricing" aria-labelledby="pricing-headline">
-      <div class="container">
-        <header class="pricing-header">
-          <span class="label reveal">Pricing</span>
-          <h2 class="pricing-h2 reveal reveal-d1" id="pricing-headline">Simple. Honest.</h2>
-          <p class="pricing-sub reveal reveal-d2">Start free. Upgrade when you're ready.</p>
-        </header>
-
-        <div class="pricing-grid">
-
-          <article class="price-card reveal reveal-d1" aria-label="Grain Free plan">
+    <!-- ── PRICING ──────────────────────────────────────────────────────────── -->
+    <section id="pricing" aria-labelledby="pricing-h2">
+      <div class="wrap">
+        <div class="pricing-top">
+          <span class="chip reveal">Pricing</span>
+          <h2 class="pricing-h2 reveal d1" id="pricing-h2">Simple. Honest.</h2>
+          <p class="pricing-sub reveal d2">Start free. Upgrade when you're ready.</p>
+        </div>
+        <div class="pricing-cards">
+          <article class="price-card reveal d1" aria-label="Grain Free plan">
             <div class="price-tier">Grain Free</div>
             <div class="price-amount">€0</div>
             <div class="price-note">Forever free · No credit card</div>
             <ul class="price-feats" aria-label="Free plan features">
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Full pipeline — ingest, cull, archive
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Local AI analysis (Moondream / LLaVA)
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Smart duplicate detection
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                HDR bracket detection &amp; merge
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                100% local — no cloud ever
-              </li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Full pipeline — ingest, cull, archive</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Local AI analysis (Moondream / LLaVA)</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Smart duplicate detection</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>HDR bracket detection &amp; merge</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>100% local — no cloud ever</li>
             </ul>
             <a href="#download" class="price-btn prim">Download Free</a>
           </article>
-
-          <article class="price-card pro reveal reveal-d2" aria-label="Grain Pro plan — coming soon">
+          <article class="price-card pro reveal d2" aria-label="Grain Pro plan — coming soon">
             <div class="price-tier">Grain Pro</div>
             <div class="price-amount">€19</div>
             <div class="price-note">One-time · No subscription</div>
             <ul class="price-feats" aria-label="Pro plan features">
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Everything in Free
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Unlimited photos per session
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Priority model support
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Export presets (Web, Social, Print)
-              </li>
-              <li>
-                <svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                Early access to new features
-              </li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Everything in Free</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Unlimited photos per session</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Priority model support</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Export presets (Web, Social, Print)</li>
+              <li><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>Early access to new features</li>
             </ul>
-            <a href="#download" class="price-btn sec" aria-label="Get notified when Grain Pro is available">Notify me when available</a>
+            <a href="#download" class="price-btn sec" aria-label="Notify me when Grain Pro is available">Notify me when available</a>
           </article>
-
         </div>
       </div>
     </section>
 
-    <!-- ── DOWNLOAD CTA ──────────────────────────────────────────────────────── -->
-    <section id="download" aria-labelledby="download-headline">
-      <div class="dl-glow" aria-hidden="true"></div>
-      <div class="container" style="position:relative;z-index:1;">
-        <span class="label reveal">Get started now</span>
-        <h2 class="dl-h2 reveal reveal-d1" id="download-headline">
-          Ready to shoot more?
-        </h2>
-        <p class="dl-sub reveal reveal-d2">
-          Free. Local. No account needed. Just download and run.
-        </p>
+    <!-- ── DOWNLOAD ─────────────────────────────────────────────────────────── -->
+    <section id="download" aria-labelledby="dl-h2">
+      <p class="dl-eyebrow reveal">Ready?</p>
+      <h2 class="dl-h2 reveal d1" id="dl-h2">
+        Shoot more.<br><em>Sort less.</em>
+      </h2>
+      <p class="dl-sub reveal d2">Free. Local. No account needed.<br>Just download and run.</p>
 
-        <div class="dl-btn-wrap reveal reveal-d3">
-          <a href="https://github.com/bbenni2/Grain/releases/latest/download/Grain-1.5.0.dmg"
-             class="btn-primary"
-             style="font-size:1.1rem;padding:16px 36px;"
-             rel="noopener noreferrer"
-             aria-label="Download Grain 1.5.0 DMG for macOS — free">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download Grain-1.5.0.dmg — Free
-          </a>
-          <p class="dl-note">Grain-1.5.0.dmg · macOS 12+ · Apple Silicon &amp; Intel</p>
-        </div>
-
-        <!-- Email signup -->
-        <div class="email-signup reveal reveal-d4">
-          <p>Get notified about updates &amp; Grain Pro launch:</p>
-          <form class="email-form" id="email-form" novalidate>
-            <label for="email-input" class="sr-only">Email address</label>
-            <input
-              type="email"
-              id="email-input"
-              class="email-input"
-              placeholder="your@email.com"
-              autocomplete="email"
-              required
-              aria-required="true"
-            />
-            <button type="submit" class="email-submit">Notify me</button>
-          </form>
-          <p class="email-thanks" id="email-thanks" role="status" aria-live="polite"></p>
-        </div>
-
-        <ul class="dl-meta reveal reveal-d5" aria-label="System requirements">
-          <li class="dl-meta-item">macOS 12+</li>
-          <li class="dl-meta-sep" aria-hidden="true">·</li>
-          <li class="dl-meta-item">Apple Silicon &amp; Intel</li>
-          <li class="dl-meta-sep" aria-hidden="true">·</li>
-          <li class="dl-meta-item">Requires Ollama (free)</li>
-          <li class="dl-meta-sep" aria-hidden="true">·</li>
-          <li class="dl-meta-item">Free · No account</li>
-        </ul>
+      <div class="dl-wrap reveal d3">
+        <a href="https://github.com/bbenni2/Grain/releases/latest/download/Grain-1.5.0.dmg"
+           class="btn btn-amber"
+           style="font-size:1.05rem;padding:16px 36px;margin:0 auto;"
+           rel="noopener noreferrer"
+           aria-label="Download Grain 1.5.0 for macOS — free">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Grain-1.5.0.dmg
+        </a>
+        <p class="dl-note">macOS 12+ · Apple Silicon &amp; Intel · Free</p>
       </div>
+
+      <div class="email-block reveal d4">
+        <p>Get notified about updates &amp; Grain Pro:</p>
+        <form class="email-row" id="email-form" novalidate>
+          <label for="email-in" class="sr-only">Email address</label>
+          <input type="email" id="email-in" class="email-in" placeholder="your@email.com" autocomplete="email" required aria-required="true" />
+          <button type="submit" class="email-btn">Notify me</button>
+        </form>
+        <p class="email-ok" id="email-ok" role="status" aria-live="polite"></p>
+      </div>
+
+      <ul class="dl-meta reveal d5" aria-label="System requirements">
+        <li><span>macOS 12+</span></li>
+        <li class="dl-meta-sep" aria-hidden="true">·</li>
+        <li><span>Apple Silicon &amp; Intel</span></li>
+        <li class="dl-meta-sep" aria-hidden="true">·</li>
+        <li><span>Requires Ollama (free)</span></li>
+        <li class="dl-meta-sep" aria-hidden="true">·</li>
+        <li><span>Free · No account</span></li>
+      </ul>
     </section>
 
   </main>
 
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════════════════════════════════════════ -->
+  <!-- ── FOOTER ───────────────────────────────────────────────────────────── -->
   <footer class="site-footer" role="contentinfo">
-    <div class="container">
+    <div class="wrap">
       <div class="footer-inner">
         <a href="#" class="footer-brand" aria-label="Grain — back to top">
-          <div class="footer-logo-mark" aria-hidden="true">
+          <div class="footer-mark" aria-hidden="true">
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M3 13L8 3L13 13" stroke="#030818" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M5.5 9.5H10.5" stroke="#030818" stroke-width="2" stroke-linecap="round"/>
+              <path d="M3 13L8 3L13 13" stroke="#0C0A09" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5.5 9.5H10.5" stroke="#0C0A09" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </div>
           <div>
@@ -1480,132 +1160,67 @@
             <div class="footer-slogan">Shoot more. Sort less.</div>
           </div>
         </a>
-        <p class="footer-copy">© 2026 Grain. Built for photographers, by a photographer.</p>
+        <p class="footer-copy">© 2026 Grain · Built for photographers, by a photographer.</p>
       </div>
     </div>
   </footer>
 
-  <!-- ── Visually hidden utility ───────────────────────────────────────────── -->
-  <style>
-    .sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
-    }
-  </style>
-
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       JAVASCRIPT
-  ══════════════════════════════════════════════════════════════════════════ -->
   <script>
     'use strict';
 
-    /* ── Scroll Reveal ─────────────────────────────────────────────────────── */
-    const revealObs = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          revealObs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    /* Scroll reveal */
+    const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);} }), {threshold:.1,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-    /* ── Smooth Scroll ─────────────────────────────────────────────────────── */
+    /* Smooth scroll */
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
-        const id = a.getAttribute('href');
-        if (id === '#') return;
-        const target = document.querySelector(id);
-        if (!target) return;
+        const id = a.getAttribute('href'); if(id==='#') return;
+        const t = document.querySelector(id); if(!t) return;
         e.preventDefault();
-        const offset = 80;
-        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+        window.scrollTo({top: t.getBoundingClientRect().top + window.scrollY - 80, behavior:'smooth'});
       });
     });
 
-    /* ── Mobile Nav ────────────────────────────────────────────────────────── */
-    const hamburger  = document.getElementById('hamburger');
-    const mobileNav  = document.getElementById('mobile-nav');
-
-    hamburger.addEventListener('click', () => {
-      const open = hamburger.getAttribute('aria-expanded') === 'true';
-      hamburger.setAttribute('aria-expanded', String(!open));
-      mobileNav.classList.toggle('open', !open);
+    /* Mobile nav */
+    const ham = document.getElementById('hamburger');
+    const mob = document.getElementById('mob-nav');
+    ham.addEventListener('click', () => {
+      const open = ham.getAttribute('aria-expanded')==='true';
+      ham.setAttribute('aria-expanded', String(!open));
+      mob.classList.toggle('open', !open);
     });
+    mob.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => { ham.setAttribute('aria-expanded','false'); mob.classList.remove('open'); }));
+    document.addEventListener('click', e => { if(!e.target.closest('.site-header')){ ham.setAttribute('aria-expanded','false'); mob.classList.remove('open'); } });
 
-    // Close on link click
-    mobileNav.querySelectorAll('[data-close]').forEach(el => {
-      el.addEventListener('click', () => {
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileNav.classList.remove('open');
-      });
-    });
+    /* Nav pill scroll */
+    const pill = document.getElementById('nav-pill');
+    window.addEventListener('scroll', () => pill.classList.toggle('scrolled', window.scrollY > 20), {passive:true});
 
-    // Close on outside click
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.site-header')) {
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileNav.classList.remove('open');
-      }
-    });
-
-    /* ── Nav scroll border ─────────────────────────────────────────────────── */
-    const navInner = document.getElementById('nav-inner');
-    window.addEventListener('scroll', () => {
-      navInner.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
-
-    /* ── Counter animation ─────────────────────────────────────────────────── */
-    function animateCounter(el, target, duration) {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        el.textContent = target;
-        return;
-      }
-      let start = 0;
-      const step = Math.ceil(target / (duration / 16));
-      const timer = setInterval(() => {
-        start = Math.min(start + step, target);
-        el.textContent = start;
-        if (start >= target) clearInterval(timer);
-      }, 16);
-    }
-
+    /* Counter animation */
     const counterEl = document.getElementById('counter');
-    if (counterEl) {
-      const obs = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          animateCounter(counterEl, 463, 1200);
-          obs.disconnect();
+    if(counterEl) {
+      const cobs = new IntersectionObserver(es => {
+        if(es[0].isIntersecting) {
+          if(window.matchMedia('(prefers-reduced-motion:reduce)').matches) { counterEl.textContent=463; return; }
+          let n=0; const step=Math.ceil(463/75);
+          const t = setInterval(() => { n=Math.min(n+step,463); counterEl.textContent=n; if(n>=463)clearInterval(t); }, 16);
+          cobs.disconnect();
         }
-      }, { threshold: 0.5 });
-      obs.observe(counterEl);
+      },{threshold:.5});
+      cobs.observe(counterEl);
     }
 
-    /* ── Email form ────────────────────────────────────────────────────────── */
-    const emailForm   = document.getElementById('email-form');
-    const emailThanks = document.getElementById('email-thanks');
-
-    emailForm.addEventListener('submit', e => {
+    /* Email form */
+    document.getElementById('email-form').addEventListener('submit', e => {
       e.preventDefault();
-      const email = document.getElementById('email-input').value;
-      // TODO: replace with real Beehiiv / Mailchimp endpoint
-      // fetch('https://api.beehiiv.com/v2/publications/YOUR_PUB_ID/subscriptions', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, reactivate_existing: false, send_welcome_email: true })
-      // });
-      console.info('Email signup:', email);
-      emailForm.style.display = 'none';
-      emailThanks.style.display = 'block';
-      emailThanks.textContent = '✓ You\'re on the list. We\'ll be in touch.';
+      const email = document.getElementById('email-in').value;
+      console.info('Signup:', email);
+      e.target.style.display='none';
+      const ok = document.getElementById('email-ok');
+      ok.style.display='block';
+      ok.textContent = '✓ You\'re on the list. We\'ll be in touch.';
     });
   </script>
-
 </body>
 </html>
