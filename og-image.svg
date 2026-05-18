@@ -1,0 +1,63 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feBlend in="SourceGraphic" mode="overlay" result="blend"/>
+    </filter>
+    <radialGradient id="glow" cx="30%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#0C0A09" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0C0A09"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Grain texture overlay -->
+  <rect width="1200" height="630" fill="white" opacity="0.025" filter="url(#noise)"/>
+
+  <!-- Logo mark -->
+  <rect x="80" y="80" width="64" height="64" rx="18" fill="#F59E0B"/>
+  <path d="M100 128L120 88L140 128" stroke="#0C0A09" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M107 114H133" stroke="#0C0A09" stroke-width="5.5" stroke-linecap="round"/>
+
+  <!-- Headline -->
+  <text x="80" y="280" font-family="Georgia, serif" font-size="96" font-weight="900" fill="#FFF8F0" letter-spacing="-3">Grain</text>
+
+  <!-- Slogan -->
+  <text x="80" y="355" font-family="Georgia, serif" font-size="48" font-style="italic" fill="#F59E0B" letter-spacing="-1">Shoot more. Sort less.</text>
+
+  <!-- Description -->
+  <text x="80" y="430" font-family="-apple-system, Arial, sans-serif" font-size="28" fill="#8A7A68">Local AI photo pipeline for macOS</text>
+  <text x="80" y="468" font-family="-apple-system, Arial, sans-serif" font-size="28" fill="#8A7A68">100% private · No cloud · Free</text>
+
+  <!-- Right side: terminal mockup -->
+  <rect x="720" y="100" width="420" height="280" rx="14" fill="#161310" stroke="#2A2318" stroke-width="1"/>
+  <!-- Traffic lights -->
+  <circle cx="748" cy="128" r="7" fill="#FF5F57"/>
+  <circle cx="768" cy="128" r="7" fill="#FFBD2E"/>
+  <circle cx="788" cy="128" r="7" fill="#28C840"/>
+  <!-- Terminal lines -->
+  <text x="740" y="175" font-family="Courier New, monospace" font-size="16" fill="#F59E0B">── Grain 1.5.0 ──────────────</text>
+  <text x="740" y="202" font-family="Courier New, monospace" font-size="15" fill="#4A3D30">→ SD card detected</text>
+  <text x="740" y="226" font-family="Courier New, monospace" font-size="15" fill="#6EE7B7">✓ 68 new photos found</text>
+  <text x="740" y="250" font-family="Courier New, monospace" font-size="15" fill="#F59E0B">  AI culling… 34 / 68</text>
+  <text x="740" y="274" font-family="Courier New, monospace" font-size="15" fill="#6EE7B7">⭐ TOP: score 94</text>
+  <text x="740" y="298" font-family="Courier New, monospace" font-size="15" fill="#4A3D30">  REJECT: blurry</text>
+  <text x="740" y="322" font-family="Courier New, monospace" font-size="15" fill="#6EE7B7">✓ Done — 6 min 12 sec</text>
+
+  <!-- Trust badges -->
+  <rect x="80" y="520" width="180" height="40" rx="20" fill="#1C1914" stroke="#2A2318"/>
+  <text x="170" y="545" font-family="-apple-system, Arial, sans-serif" font-size="16" fill="#8A7A68" text-anchor="middle">100% Local AI</text>
+
+  <rect x="274" y="520" width="160" height="40" rx="20" fill="#1C1914" stroke="#2A2318"/>
+  <text x="354" y="545" font-family="-apple-system, Arial, sans-serif" font-size="16" fill="#8A7A68" text-anchor="middle">No Cloud</text>
+
+  <rect x="448" y="520" width="120" height="40" rx="20" fill="#1C1914" stroke="#2A2318"/>
+  <text x="508" y="545" font-family="-apple-system, Arial, sans-serif" font-size="16" fill="#8A7A68" text-anchor="middle">Free</text>
+
+  <!-- URL -->
+  <text x="1120" y="580" font-family="-apple-system, Arial, sans-serif" font-size="20" fill="#4A3D30" text-anchor="end">getgrained.app</text>
+</svg>
