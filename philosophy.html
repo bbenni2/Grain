@@ -6,12 +6,18 @@
   <title>Philosophy — Grain | Shoot more. Sort less.</title>
   <meta name="description" content="Why we built Grain. Photography is about the joy of shooting, not hours of sorting. A tool made by a photographer, for photographers." />
   <link rel="canonical" href="https://getgrained.app/philosophy" />
+  <meta property="og:type"        content="article" />
+  <meta property="og:url"         content="https://getgrained.app/philosophy" />
+  <meta property="og:title"       content="Philosophy — Grain" />
+  <meta property="og:description" content="Why we built Grain. Photography is about the joy of shooting, not hours of sorting. A tool made by a photographer, for photographers." />
+  <meta property="og:image"       content="https://getgrained.app/og-image.png" />
+  <meta name="twitter:card"       content="summary_large_image" />
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='32' height='32' rx='8' fill='%23FFB400'/%3E%3Cpath d='M8 26L16 6L24 26' stroke='%23141210' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M11.5 19H20.5' stroke='%23141210' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..700;1,9..144,200..700&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
 
   <style>
     /* ─── Reset ────────────────────────────────────────────────────────────── */
@@ -22,7 +28,7 @@
       --amber:          #FFB400;
       --amber-light:    #FFC933;
       --amber-dark:     #CC9000;
-      --amber-glow:     rgba(255, 180, 0, 0.10);
+      --amber-glow:     rgba(255, 180, 0, 0.12);
       --amber-border:   rgba(255, 180, 0, 0.28);
       --purple:         #7C5CBF;
       --bg:             #141210;
@@ -32,7 +38,7 @@
       --border-warm:    rgba(255, 180, 0, 0.16);
       --text:           #F5F0E8;
       --text-body:      #C4B49A;
-      --text-muted:     #7A6A55;
+      --text-muted:     #8F7F66;
       --text-dim:       #3D3228;
       --max-w:          800px;
       --max-w-wide:     1120px;
@@ -40,7 +46,8 @@
       --font-mono:      'IBM Plex Mono', 'Courier New', monospace;
     }
 
-    html { scroll-behavior: smooth; font-size: 16px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     body {
       background: var(--bg);
       color: var(--text);
@@ -61,6 +68,8 @@
 
     /* ─── Accessibility ───────────────────────────────────────────────────── */
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .skip-link { position:absolute; top:-100px; left:24px; background:var(--amber); color:#141210; font-weight:600; padding:10px 20px; border-radius:8px; text-decoration:none; z-index:10000; transition:top .2s; }
+    .skip-link:focus { top:24px; }
     :focus-visible { outline:2px solid var(--amber); outline-offset:3px; border-radius:4px; }
 
     /* ─── Reveal ──────────────────────────────────────────────────────────── */
@@ -179,17 +188,6 @@
       font-family: var(--font-mono); font-size: .68rem; color: var(--text-muted);
       letter-spacing: .08em;
     }
-    /* Fallback — shown when photo is missing */
-    .phil-photo-fallback {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 12px;
-    }
-    .phil-photo-fallback-text {
-      font-family: var(--font-mono); font-size: .75rem; color: var(--text-dim);
-      letter-spacing: .1em; text-transform: uppercase;
-    }
-
     /* ─── Manifesto sections ──────────────────────────────────────────────── */
     .phil-sections {
       display: flex; flex-direction: column; gap: 0;
@@ -211,7 +209,6 @@
       display: block; width: 20px; height: 1px;
       background: var(--text-dim); margin-bottom: 10px;
     }
-    .phil-section-body {}
     .phil-section-title {
       font-family: var(--font-display);
       font-size: clamp(1.8rem, 3.5vw, 2.8rem);
@@ -301,7 +298,6 @@
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 32px;
     }
-    .phil-cta-left {}
     .phil-cta-title {
       font-family: var(--font-display); font-size: 1.7rem; font-weight: 300;
       color: var(--text); font-variation-settings: 'opsz' 48; letter-spacing: -.015em;
@@ -341,12 +337,16 @@
       .phil-section { grid-template-columns: 1fr; gap: 20px; }
       .phil-section-label { position: static; }
       .phil-cta { flex-direction: column; gap: 24px; }
-      .nav-links .nav-link:nth-child(n+3) { display: none; }
       .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
     }
   </style>
 </head>
 <body>
+
+<a href="#main" class="skip-link">Skip to content</a>
 
 <!-- ────────────────────────────────────────────────────────────────────────
      NAV
@@ -364,7 +364,7 @@
     </a>
 
     <div class="nav-links">
-      <a href="/" class="nav-link">Home</a>
+      <a href="/#how-it-works" class="nav-link">How it works</a>
       <a href="/#features" class="nav-link">Features</a>
       <a href="/#pricing" class="nav-link">Pricing</a>
       <a href="/philosophy" class="nav-link active">Philosophy</a>
@@ -427,11 +427,11 @@
   <div class="wrap-text">
 
     <!-- 01 — The Name -->
-    <div class="phil-section reveal">
+    <div class="phil-section">
       <div class="phil-section-label">
         <span></span>The name
       </div>
-      <div class="phil-section-body">
+      <div class="phil-section-body reveal">
         <h2 class="phil-section-title">
           Grain — as in<br><em>film grain.</em>
         </h2>
@@ -456,11 +456,11 @@
     </div>
 
     <!-- 02 — The problem -->
-    <div class="phil-section reveal">
+    <div class="phil-section">
       <div class="phil-section-label">
         <span></span>The problem
       </div>
-      <div class="phil-section-body">
+      <div class="phil-section-body reveal">
         <h2 class="phil-section-title">
           You shoot 400 photos.<br><em>Then what?</em>
         </h2>
@@ -497,11 +497,11 @@
     </div>
 
     <!-- 03 — The Golden Hour -->
-    <div class="phil-section reveal">
+    <div class="phil-section">
       <div class="phil-section-label">
         <span></span>The Golden Hour
       </div>
-      <div class="phil-section-body">
+      <div class="phil-section-body reveal">
         <h2 class="phil-section-title">
           That last hour<br>of <em>warm light.</em>
         </h2>
@@ -526,11 +526,11 @@
     </div>
 
     <!-- 04 — Privacy -->
-    <div class="phil-section reveal">
+    <div class="phil-section">
       <div class="phil-section-label">
         <span></span>Privacy
       </div>
-      <div class="phil-section-body">
+      <div class="phil-section-body reveal">
         <h2 class="phil-section-title">
           Your photos.<br><em>Full stop.</em>
         </h2>
@@ -555,11 +555,11 @@
     </div>
 
     <!-- 05 — Made by a photographer -->
-    <div class="phil-section reveal">
+    <div class="phil-section">
       <div class="phil-section-label">
         <span></span>Who made this
       </div>
-      <div class="phil-section-body">
+      <div class="phil-section-body reveal">
         <h2 class="phil-section-title">
           Made by a photographer,<br><em>for photographers.</em>
         </h2>
@@ -585,11 +585,11 @@
     </div>
 
     <!-- 06 — The future -->
-    <div class="phil-section reveal">
+    <div class="phil-section">
       <div class="phil-section-label">
         <span></span>What's next
       </div>
-      <div class="phil-section-body">
+      <div class="phil-section-body reveal">
         <h2 class="phil-section-title">
           Still early.<br><em>Deliberately so.</em>
         </h2>

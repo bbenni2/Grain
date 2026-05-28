@@ -19,7 +19,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200..700;1,9..144,200..700&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
 
   <style>
     /* ─── Reset ────────────────────────────────────────────────────────────── */
@@ -43,14 +43,15 @@
       --border-warm:    rgba(255, 180, 0, 0.16);
       --text:           #F5F0E8;
       --text-body:      #C4B49A;
-      --text-muted:     #7A6A55;
+      --text-muted:     #8F7F66;
       --text-dim:       #3D3228;
       --max-w:          1120px;
       --font-display:   'Fraunces', Georgia, serif;
       --font-mono:      'IBM Plex Mono', 'Courier New', monospace;
     }
 
-    html { scroll-behavior: smooth; font-size: 16px; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; font-size: 16px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     body {
       background: var(--bg);
       color: var(--text);
@@ -130,6 +131,7 @@
       border: 1px solid rgba(255,255,255,.1);
     }
     .btn-outline:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+    .btn:disabled { pointer-events: none; opacity: .55; }
 
     /* ─── Divider ─────────────────────────────────────────────────────────── */
     .section-rule {
@@ -748,10 +750,10 @@
       position: relative; z-index: 1;
     }
     .download-meta-item {
-      font-size: .72rem; color: var(--text-dim);
+      font-size: .72rem; color: var(--text-muted);
       font-family: var(--font-mono); letter-spacing: .05em;
     }
-    .download-meta-sep { color: var(--text-dim); }
+    .download-meta-sep { color: var(--text-muted); }
 
     /* ════════════════════════════════════════════════════════════════════════
        FOOTER
@@ -778,19 +780,19 @@
       color: var(--text-muted); font-variation-settings: 'opsz' 24;
     }
     .footer-tagline {
-      font-size: .72rem; color: var(--text-dim); font-family: var(--font-mono);
+      font-size: .72rem; color: var(--text-muted); font-family: var(--font-mono);
       margin-top: 4px;
     }
     .footer-links {
       display: flex; align-items: center; gap: 24px;
     }
     .footer-link {
-      font-size: .75rem; color: var(--text-dim); font-family: var(--font-mono);
+      font-size: .75rem; color: var(--text-muted); font-family: var(--font-mono);
       text-decoration: none; transition: color 200ms;
     }
-    .footer-link:hover { color: var(--text-muted); }
+    .footer-link:hover { color: var(--text-body); }
     .footer-copy {
-      font-size: .72rem; color: var(--text-dim); font-family: var(--font-mono);
+      font-size: .72rem; color: var(--text-muted); font-family: var(--font-mono);
     }
 
     /* ════════════════════════════════════════════════════════════════════════
@@ -1048,9 +1050,9 @@
         </div>
         <h3 class="feature-title">Smart Organisation</h3>
         <p class="feature-desc">
-          Archive by date, camera, or session. Consistent naming convention every time, without manual effort.
+          Date-based folders, consistent naming, and XMP sidecars with labels and keywords — ready to open in Lightroom or Capture One.
         </p>
-        <span class="feature-tag">Auto-archive</span>
+        <span class="feature-tag">Lightroom-ready</span>
       </div>
 
       <div class="feature-card reveal d3">
@@ -1060,7 +1062,7 @@
         </div>
         <h3 class="feature-title">Privacy First</h3>
         <p class="feature-desc">
-          Zero cloud. Zero accounts. Zero telemetry. Your photos stay on your Mac — always. No exceptions.
+          Zero cloud. Zero accounts. Zero telemetry. The AI model runs on your Mac — your photos never leave it.
         </p>
         <span class="feature-tag">100% Private</span>
       </div>
@@ -1068,37 +1070,37 @@
       <div class="feature-card reveal d4">
         <span class="feature-num">04</span>
         <div class="feature-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><rect x="2" y="6" width="7" height="6" rx="1"/><rect x="15" y="6" width="7" height="6" rx="1"/><path d="M2 18h7M15 18h7"/><path d="M9 9h6"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M4 4h11l5 5v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M14 4v6h6"/></svg>
         </div>
-        <h3 class="feature-title">HDR Bracket Detection</h3>
+        <h3 class="feature-title">Every RAW format</h3>
         <p class="feature-desc">
-          Grain automatically finds and groups HDR brackets. Each set is kept together for merge in post.
+          RW2, CR2/3, NEF, ARW — plus JPEG and PNG. Grain reads your camera's files directly. No conversion, no plugins.
         </p>
-        <span class="feature-tag">RAW + HDR</span>
+        <span class="feature-tag">RAW + JPEG</span>
       </div>
 
       <div class="feature-card reveal d1">
         <span class="feature-num">05</span>
         <div class="feature-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
         </div>
-        <h3 class="feature-title">Time Estimate</h3>
+        <h3 class="feature-title">Presets &amp; grading</h3>
         <p class="feature-desc">
-          Before you start, Grain tells you exactly how long the pipeline will take — and keeps your Mac awake for it.
+          Default, cinematic, bright &amp; airy, muted earth — colour grading via LUT, plus vignette and film grain. Or roll your own.
         </p>
-        <span class="feature-tag">Smart scheduling</span>
+        <span class="feature-tag">LUT grading</span>
       </div>
 
       <div class="feature-card reveal d2">
         <span class="feature-num">06</span>
         <div class="feature-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M15 10l5 5-5 5"/><path d="M4 4v7a4 4 0 004 4h12"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
         </div>
-        <h3 class="feature-title">Video Support</h3>
+        <h3 class="feature-title">Watcher mode</h3>
         <p class="feature-desc">
-          Not just photos. Grain analyses and archives your video clips too — grouped with their shoot session.
+          Grain watches for SD cards and mounts, then runs the whole pipeline hands-free. Plug in, walk away.
         </p>
-        <span class="feature-tag">New</span>
+        <span class="feature-tag">Automatic</span>
       </div>
 
     </div>
@@ -1134,14 +1136,14 @@
 
     <div class="app-window reveal d2" role="img" aria-label="Grain app interface showing pipeline progress">
       <!-- Titlebar -->
-      <div class="app-titlebar">
+      <div class="app-titlebar" aria-hidden="true">
         <span class="app-dot dot-red"></span>
         <span class="app-dot dot-yellow"></span>
         <span class="app-dot dot-green"></span>
         <span class="app-title-text">Grain — Session 2025-05-26</span>
       </div>
       <!-- Body -->
-      <div class="app-body">
+      <div class="app-body" aria-hidden="true">
         <!-- Sidebar -->
         <div class="app-sidebar">
           <div class="app-sidebar-item active">
@@ -1226,10 +1228,10 @@
         <div class="pricing-price"><em>Free</em></div>
         <div class="pricing-period">forever — no card required</div>
         <ul class="pricing-list" aria-label="Included features">
-          <li>AI auto-culling</li>
-          <li>Smart archiving by date</li>
-          <li>HDR bracket detection</li>
-          <li>Video file support</li>
+          <li>AI auto-culling (on-device)</li>
+          <li>Smart archiving + XMP sidecars</li>
+          <li>Every RAW format (RW2 · CR2/3 · NEF · ARW)</li>
+          <li>Presets &amp; colour grading</li>
           <li>Watcher mode</li>
           <li>100% local, zero cloud</li>
         </ul>
@@ -1319,6 +1321,7 @@
       </div>
 
       <div class="footer-links">
+        <a href="/philosophy" class="footer-link">Philosophy</a>
         <a href="https://github.com/bbenni2/Grain" class="footer-link" target="_blank" rel="noopener">GitHub</a>
         <a href="https://github.com/bbenni2/Grain/issues" class="footer-link" target="_blank" rel="noopener">Report a bug</a>
         <a href="https://github.com/bbenni2/Grain/releases" class="footer-link" target="_blank" rel="noopener">Changelog</a>
@@ -1362,16 +1365,9 @@
     revealItems.forEach(function (el) { el.classList.add('in'); });
   }
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
+  // Smooth scrolling + header offset handled natively via CSS
+  // (scroll-behavior: smooth + scroll-padding-top), which also respects
+  // prefers-reduced-motion. No JS needed.
 })();
 </script>
 
