@@ -321,6 +321,39 @@ class _ThumbLoader(QThread):
         self._stop = True
 
 
+class _ExportWorker(QThread):
+    """Runs main.py --export <style> on the last session in the background.
+
+    We re-use the same subprocess pattern as the main pipeline so all the
+    existing config, EXIF handling and export logic applies unchanged.
+    """
+    finished = pyqtSignal(bool, str)   # (success, message)
+
+    def __init__(self, session_dir: str, style: str, preset: str = "default"):
+        super().__init__()
+        self._session_dir = session_dir
+        self._style = style
+        self._preset = preset
+
+    def run(self):
+        try:
+            import sys as _sys
+            from pathlib import Path as _P
+            script = str(_P(__file__).parent / "main.py")
+            result = subprocess.run(
+                [_sys.executable, script,
+                 "--source", self._session_dir,
+                 "--export", self._style,
+                 "--export-preset", self._preset,
+                 "--no-cull", "--no-ai"],
+                capture_output=True, text=True, timeout=180,
+            )
+            ok = result.returncode == 0
+            self.finished.emit(ok, result.stdout[-500:] if ok else result.stderr[-300:])
+        except Exception as exc:
+            self.finished.emit(False, str(exc))
+
+
 class MainWindow(QMainWindow):
     # Thread-sicheres Signal für Schätzungs-Updates aus Background-Thread
     _estimate_ready = pyqtSignal(str)
@@ -333,6 +366,7 @@ class MainWindow(QMainWindow):
         self._last_archive: str = ""
         self._last_session_dir: str = ""
         self._thumb_loader: _ThumbLoader | None = None
+        self._export_worker: _ExportWorker | None = None
         self._running = False
         self._estimate_timer = QTimer()
         self._estimate_timer.setSingleShot(True)
@@ -900,6 +934,44 @@ class MainWindow(QMainWindow):
         lay.addWidget(self.results_stack, 1)
 
         # ── Bottom: open results ──────────────────────────────────────────────
+        # ── Export panel ──────────────────────────────────────────────────────
+        export_frame = QFrame()
+        export_frame.setStyleSheet(
+            "QFrame { background: #1A1714; border: 1px solid #252017; border-radius: 8px; }")
+        export_lay = QHBoxLayout(export_frame)
+        export_lay.setContentsMargins(12, 8, 12, 8)
+        export_lay.setSpacing(8)
+
+        exp_lbl = QLabel("Export:")
+        exp_lbl.setStyleSheet("color:#8F7F66;font-size:12px;font-weight:600;border:none;background:transparent;")
+        export_lay.addWidget(exp_lbl)
+
+        self.export_preset_combo = QComboBox()
+        self.export_preset_combo.setStyleSheet(self._COMBO_STYLE)
+        self.export_preset_combo.setFixedWidth(160)
+        for name, label in [("default","Default"), ("cinematic","Cinematic"),
+                             ("bright_airy","Bright & Airy"), ("muted_earth","Muted Earth")]:
+            self.export_preset_combo.addItem(label, name)
+        export_lay.addWidget(self.export_preset_combo)
+
+        export_lay.addSpacing(6)
+        self._export_btns: list[QPushButton] = []
+        for style, icon in [("web","🌐"), ("social","📱"), ("archive","🗂")]:
+            btn = QPushButton(f"{icon} {style.title()}")
+            btn.setStyleSheet(self._BTN_SECONDARY)
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            btn.setEnabled(False)
+            btn.clicked.connect(lambda _checked, s=style: self._run_export(s))
+            self._export_btns.append(btn)
+            export_lay.addWidget(btn)
+
+        export_lay.addStretch()
+        self.export_status_lbl = QLabel("")
+        self.export_status_lbl.setStyleSheet("color:#8F7F66;font-size:11px;border:none;background:transparent;")
+        export_lay.addWidget(self.export_status_lbl)
+        lay.addWidget(export_frame)
+
+        # ── Bottom bar ────────────────────────────────────────────────────────
         bot = QHBoxLayout()
         self.open_btn = QPushButton("📁  Fotos öffnen")
         self.open_btn.setStyleSheet(self._BTN_SECONDARY)
@@ -1367,6 +1439,34 @@ class MainWindow(QMainWindow):
         self.tabs.setCurrentIndex(1)
 
     # ── Gallery (Ergebnisse tab) ──────────────────────────────────────────────
+    def _run_export(self, style: str) -> None:
+        """Export the last session with the selected preset in the background."""
+        session_dir = self._last_session_dir or self._last_archive
+        if not session_dir:
+            return
+        preset = self.export_preset_combo.currentData()
+        for b in self._export_btns:
+            b.setEnabled(False)
+        self.export_status_lbl.setText("⏳ Exporting…")
+        self._export_worker = _ExportWorker(session_dir, style, preset)
+        self._export_worker.finished.connect(self._on_export_finished)
+        self._export_worker.start()
+
+    def _on_export_finished(self, ok: bool, msg: str) -> None:
+        if ok:
+            self.export_status_lbl.setText("✅ Done")
+            self._show_toast("✅  Export fertig")
+        else:
+            self.export_status_lbl.setText("❌ Fehler")
+        for b in self._export_btns:
+            b.setEnabled(True)
+
+    def _enable_export_buttons(self, enabled: bool) -> None:
+        for b in self._export_btns:
+            b.setEnabled(enabled)
+        if not enabled:
+            self.export_status_lbl.setText("")
+
     def _on_tab_changed(self, index: int) -> None:
         """Lazy-load the latest session into the gallery when Ergebnisse opens empty."""
         if index != 1 or self._running:
@@ -1391,14 +1491,19 @@ class MainWindow(QMainWindow):
             chip.setChecked(k == key)
         for row in range(self.gallery.count()):
             item = self.gallery.item(row)
-            label = self._gallery_items[row].get("label", "") if row < len(self._gallery_items) else ""
-            item.setHidden(key != "ALL" and label != key)
+            if row >= len(self._gallery_items):
+                continue
+            label = self._gallery_items[row].get("label", "")
+            if label == "__sep__":
+                item.setHidden(False)  # always show group separators
+            else:
+                item.setHidden(key != "ALL" and label != key)
 
     def _open_gallery_item(self, item: QListWidgetItem) -> None:
         """Open the double-clicked photo in the system viewer."""
         path = item.data(Qt.ItemDataRole.UserRole)
-        if path and os.path.exists(path):
-            subprocess.run(["open", path], check=False)
+        if path and os.path.exists(str(path)):
+            subprocess.run(["open", str(path)], check=False)
 
     def _load_gallery(self, session_dir: str) -> None:
         """Read .pipeline_report.json and populate the thumbnail gallery."""
@@ -1432,6 +1537,7 @@ class MainWindow(QMainWindow):
         # Best shots first so the most relevant thumbnails decode first.
         label_priority = {"TOP": 0, "KEEP": 1, "UNKNOWN": 2, "REJECT": 3}
         MAX_TILES = 800   # safety cap for huge archive-wide reports
+        role_badge = {"BASE": "0EV", "OVER": "+EV", "UNDER": "-EV", "MEMBER": "BR", "NONE": ""}
 
         # Only show photos we can actually display (file still on disk).
         visible = []
@@ -1442,20 +1548,52 @@ class MainWindow(QMainWindow):
             if not path or not os.path.exists(path):
                 continue
             visible.append((p, path))
-        visible.sort(key=lambda t: label_priority.get(t[0].get("label", "UNKNOWN"), 2))
+
+        # Sort: brackets first (grouped by group_id), then by label priority
+        bracket_ids = {p.get("bracket_group_id") for p, _ in visible
+                       if p.get("bracket_group_id") is not None}
+        has_brackets = bool(bracket_ids)
+
+        if has_brackets:
+            bracketed = [t for t in visible if t[0].get("bracket_group_id") is not None]
+            non_bracketed = [t for t in visible if t[0].get("bracket_group_id") is None]
+            bracketed.sort(key=lambda t: (t[0].get("bracket_group_id", 999),
+                                          t[0].get("bracket_role", "NONE") != "BASE"))
+            non_bracketed.sort(key=lambda t: label_priority.get(t[0].get("label", "UNKNOWN"), 2))
+            visible = bracketed + non_bracketed
+        else:
+            visible.sort(key=lambda t: label_priority.get(t[0].get("label", "UNKNOWN"), 2))
         visible = visible[:MAX_TILES]
 
+        last_bracket_id = None
         for idx, (p, path) in enumerate(visible):
             label = p.get("label", "UNKNOWN")
             ai = p.get("ai_scores") or {}
             ls = p.get("local_scores") or {}
             score = ai.get("final_score") or ls.get("composite", 0.0)
             fname = p.get("filename") or _P(path).name
-            caption = f"{label_emoji.get(label, '·')} {fname}\n{int(score)}"
+            bracket_id = p.get("bracket_group_id")
+            role = p.get("bracket_role", "NONE")
+
+            # Bracket group header separator (non-selectable text item)
+            if bracket_id is not None and bracket_id != last_bracket_id:
+                sep = QListWidgetItem(f"── Bracket {bracket_id + 1} ──────────────────")
+                sep.setFlags(Qt.ItemFlag.NoItemFlags)
+                sep.setForeground(QColor("#FFB400"))
+                sep.setSizeHint(QSize(self.gallery.width(), 22))
+                self.gallery.addItem(sep)
+                self._gallery_items.append({"label": "__sep__", "path": "", "score": 0})
+                last_bracket_id = bracket_id
+
+            badge = role_badge.get(role, "")
+            caption = f"{badge+' ' if badge else ''}{label_emoji.get(label, '·')} {fname}\n{int(score)}"
 
             item = QListWidgetItem(caption)
             item.setData(Qt.ItemDataRole.UserRole, path)
             item.setTextAlignment(Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop)
+            # Visually distinguish BASE frames
+            if role == "BASE":
+                item.setForeground(QColor("#FFB400"))
             self.gallery.addItem(item)
             self._gallery_items.append({"label": label, "path": path, "score": score})
             load_list.append((idx, path))
@@ -2094,6 +2232,7 @@ class MainWindow(QMainWindow):
             self.progress_bar.setValue(100)
             self.status_label.setText("✅ Fertig — Mac kann wieder schlafen.")
             self.open_btn.setEnabled(bool(self._last_archive))
+            self._enable_export_buttons(True)
             self._append_log("✅ Done.")
 
             # Populate Ergebnisse tab stats
@@ -2677,6 +2816,9 @@ class MainWindow(QMainWindow):
         if self._thumb_loader is not None:
             self._thumb_loader.stop()
             self._thumb_loader.wait(200)
+        if self._export_worker is not None and self._export_worker.isRunning():
+            self._export_worker.terminate()
+            self._export_worker.wait(300)
         self._stop_caffeinate()
         event.accept()
 
