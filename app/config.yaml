@@ -1,0 +1,123 @@
+# Grain — Shoot more. Sort less.
+# Configuration file — All paths support ~ expansion and environment variables
+
+# ── Lizenz ───────────────────────────────────────────────────────────────────
+license:
+  key: ""              # Grain Pro Lizenzschlüssel (leer = Free-Tier)
+  # Während kostenloser Phase: alle Features freigeschaltet
+  # max_free_photos: 500   # Limit aktivieren wenn Monetarisierung startet
+
+# ── Performance & System-Priorität ──────────────────────────────────────────
+pipeline:
+  nice_level: 10          # Prozess-Priorität. 0=normal, 10=Hintergrund (Mac bleibt flüssig)
+                          # 19=absolut niedrigste Prio (sehr langsam)
+  culling_workers: 2      # Parallele Threads beim Culling. 1=sequentiell, 4=schnellst/CPU-intensiv
+  ai_workers: 2           # Parallele Ollama-Calls. Ollama verarbeitet intern sequentiell,
+                          # 2 Workers reduzieren aber Python-Overhead spürbar
+
+paths:
+  archive_root: ~/Pictures/Archive
+  export_root: ~/Pictures/Exports
+  presets_dir: ./presets
+  state_file: ~/.photo_pipeline_state.json
+  pid_file: ~/.photo_pipeline.pid
+  flat_archive: false   # true = alle Fotos in archive_root/EventName/ statt YYYY/MM/YYYY-MM-DD_Event/
+
+culling:
+  sharpness_weight: 0.40    # Schärfe
+  exposure_weight: 0.25     # Belichtung
+  histogram_weight: 0.15    # Histogramm-Qualität
+  composition_weight: 0.20  # Komposition (Rule of Thirds, Horizont, etc.)
+  top_percentile: 20        # top 20% of session → ⭐ TOP
+  keep_threshold: 35        # min composite score for ✅ KEEP
+  reject_threshold: 35      # below this → 🗑 REJECT
+  phash_distance: 8         # Hamming distance for pHash duplicate grouping
+  min_sharpness: 10         # absolute floor — definitely blurry
+
+ai:
+  enabled: true              # set false to skip AI analysis entirely
+  provider: local            # "claude" | "local"
+
+  # --- Local model (Ollama) ---
+  local_model: moondream          # schnell: moondream (~5s/Bild, ~40 Min für 500 Fotos)
+                                  # besser:  llava (~12s/Bild) | qwen2.5-vl (~20s/Bild)
+  local_url: http://localhost:11434
+
+  # --- Claude (fallback / alternative) ---
+  model: claude-sonnet-4-5
+  api_key: ""                # optional — falls back to ANTHROPIC_API_KEY env var
+  max_tokens: 1500
+  # Cost per 1M tokens (USD) — for cost tracking display
+  cost_input_per_mtok: 3.0   # sonnet pricing
+  cost_output_per_mtok: 15.0
+
+  # --- Shared settings ---
+  max_image_short_side: 512  # px — Bildgröße vor dem Senden. 512=schnell+gut, 800=langsamer
+  jpeg_quality_for_api: 65   # JPEG-Kompression für Upload. 65=gut genug, 85=höhere Qualität
+  workers: 2                 # Parallele AI-Calls (überschreibt pipeline.ai_workers für AI)
+
+export:
+  default_preset: default
+  web:
+    max_size: 2000
+    quality: 85
+    format: JPEG
+    colorspace: sRGB
+  social:
+    size: 1080
+    quality: 90
+    format: JPEG
+    crop: center            # center | saliency
+  archive:
+    format: TIFF            # TIFF | original_only
+    bits: 16
+  print:
+    format: TIFF
+    dpi: 300
+  preserve_exif: true
+
+bracketing:
+  enabled: true
+  # Bracket frames are ALWAYS sorted into subfolders (Brackets/Bracketing_NN/)
+  # Merging is intentionally disabled — originals stay as shot, never combined
+  frames_per_sequence: 0    # 0 = auto-detect via shutter ratio, 3/5/7 = fixed count per AEB sequence
+  time_window: 4.0          # seconds between frames to be considered a bracket
+  phash_distance: 6         # similarity threshold (tighter than duplicate dedup)
+  min_ev_step: 0.5          # minimum EV difference to confirm it's a bracket
+  min_composite_score: 20.0 # base frame quality floor; below = REJECT entire bracket
+  # BASE frame → AI analysis; non-base frames → KEEP label
+
+darktable:
+  cli_path: ""              # auto-detected if empty
+  style: ""                 # darktable style name, empty = none
+  timeout: 120              # seconds per image
+
+ingestion:
+  supported_extensions:
+    - .rw2
+    - .jpg
+    - .jpeg
+    - .png
+    - .tif
+    - .tiff
+    - .cr2
+    - .cr3
+    - .nef
+    - .arw
+  md5_chunk_kb: 64          # how many KB to hash for fast dedup
+  event_name: ""            # default event name, override with --event
+
+videos:
+  enabled: false            # true = Videos von SD-Karte verarbeiten und in session_dir/Videos/ sortieren
+  min_duration: 3.0         # Clips kürzer als N Sekunden → REJECT (zu kurz, wahrscheinlich Versehen)
+  # Videos werden nach KEEP / REVIEW / REJECT bewertet (Auflösung, Audioqualtät, Länge)
+  # Ergebnis erscheint nach dem Pipeline-Lauf im "Ergebnisse"-Tab
+
+watcher:
+  debounce_seconds: 5
+  watch_volumes: true       # also watch /Volumes/ for SD cards
+  auto_event_from_gps: true # try to name event from GPS city
+
+logging:
+  level: INFO               # DEBUG | INFO | WARNING | ERROR
+  log_file: ""              # empty = stdout only

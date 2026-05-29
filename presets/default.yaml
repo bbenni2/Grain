@@ -1,0 +1,16 @@
+# Default Preset — neutrale Entwicklung, minimalste Eingriffe
+name: default
+description: Neutrale, natürliche Entwicklung ohne starke Eingriffe
+
+brightness: 1.02
+contrast: 1.05
+saturation: 1.05
+sharpness: 1.1
+
+color_grade:
+  shadows:    [0, 0, 0]
+  mids:       [0, 0, 0]
+  highlights: [0, 0, 0]
+
+vignette: 0.0
+grain: 0

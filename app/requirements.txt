@@ -1,0 +1,30 @@
+# AI Foto-Pipeline — Python Dependencies
+# Install: pip install -r requirements.txt
+
+# Core image processing
+rawpy>=0.21.0
+opencv-python>=4.9.0
+Pillow>=10.3.0
+imagehash>=4.3.1
+numpy>=1.26.0
+
+# AI
+anthropic>=0.40.0
+
+# EXIF (pure-Python fallback)
+piexif>=1.1.3
+
+# File watching
+watchdog>=4.0.0
+
+# Config
+pyyaml>=6.0.1
+
+# CLI & Terminal
+rich>=13.7.0
+click>=8.1.7
+
+# System tools (install via Homebrew, not pip):
+# brew install exiftool
+# brew install darktable   (optional — for professional RAW development)
+PyQt6>=6.7.0

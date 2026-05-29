@@ -1,0 +1,16 @@
+# Bright & Airy Preset — hell, clean, Instagram-tauglich
+name: bright_airy
+description: Helles, luftiges Preset für Travel- und Lifestyle-Fotos
+
+brightness: 1.15
+contrast: 0.92
+saturation: 1.12
+sharpness: 1.08
+
+color_grade:
+  shadows:    [8, 8, 12]     # Aufgehellte, leicht kühle Schatten
+  mids:       [4, 4, 0]      # Leicht wärmer in Mitten
+  highlights: [6, 4, -2]     # Warm-cremige Highlights
+
+vignette: 0.0
+grain: 0

@@ -1,0 +1,16 @@
+# Cinematic Preset — filmischer Look, gedämpfte Farben, Teal-Orange-Grading
+name: cinematic
+description: Filmischer Look mit Teal-Schatten, warmen Highlights, leichter Vignette
+
+brightness: 0.98
+contrast: 1.18
+saturation: 0.88
+sharpness: 1.05
+
+color_grade:
+  shadows:    [-8, 2, 12]    # Teal tint in shadows
+  mids:       [2, 0, -4]     # Leicht wärmer in Mitten
+  highlights: [12, 6, -8]    # Orange-warm in Highlights
+
+vignette: 0.35
+grain: 2
