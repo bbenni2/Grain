@@ -193,39 +193,45 @@
     ════════════════════════════════════════════════════════════════════════ */
     .hero {
       position: relative;
-      min-height: 100svh;
-      display: flex; align-items: flex-end;
-      padding-bottom: clamp(60px, 8vw, 100px);
+      min-height: clamp(600px, 90svh, 880px);
+      display: flex; align-items: center;
+      padding: clamp(130px, 20vh, 220px) 0 clamp(80px, 10vw, 120px);
       overflow: hidden;
     }
 
-    /* Photo background */
+    /* Atmospheric, photo-free backdrop — pure CSS golden-hour darkroom light */
     .hero-bg {
       position: absolute; inset: 0;
+      pointer-events: none;
       background:
-        linear-gradient(to bottom,
-          rgba(20, 18, 16, 0.30) 0%,
-          rgba(20, 18, 16, 0.10) 35%,
-          rgba(20, 18, 16, 0.55) 70%,
-          rgba(20, 18, 16, 0.92) 100%
-        ),
-        linear-gradient(135deg,
-          rgba(255, 180, 0, 0.22) 0%,
-          rgba(124, 92, 191, 0.18) 100%
-        );
-      background-color: #1E1610;
+        /* warm golden-hour glow rising from the bottom-left (the "sun") */
+        radial-gradient(ellipse 95% 75% at 10% 105%, rgba(255, 180, 0, 0.18) 0%, transparent 55%),
+        /* soft purple counter-glow, upper-right */
+        radial-gradient(ellipse 70% 60% at 95% 5%, rgba(124, 92, 191, 0.15) 0%, transparent 55%),
+        /* gentle vertical depth, warm at top fading to deep shadow */
+        linear-gradient(to bottom, #18140E 0%, var(--bg) 48%, #100D0A 100%);
     }
 
-    /* Warm amber glow from bottom-left — golden hour sun direction */
+    /* Edge vignette — darkroom depth, keeps focus on the headline */
     .hero-bg::after {
       content: '';
       position: absolute; inset: 0;
       background: radial-gradient(
-        ellipse 80% 50% at 15% 90%,
-        rgba(255, 180, 0, 0.20) 0%,
-        transparent 70%
+        ellipse 110% 85% at 50% 42%,
+        transparent 52%,
+        rgba(0, 0, 0, 0.5) 100%
       );
     }
+
+    /* Faint oversized aperture motif — decorative, photography without a photo */
+    .hero-aperture {
+      position: absolute; z-index: 1; pointer-events: none;
+      top: 50%; right: clamp(-220px, -6vw, -80px); transform: translateY(-50%);
+      width: clamp(360px, 42vw, 620px); height: clamp(360px, 42vw, 620px);
+      opacity: .10;
+    }
+    .hero-aperture svg { width: 100%; height: 100%; display: block; }
+    @media (max-width: 760px) { .hero-aperture { opacity: .06; right: -40%; } }
 
     .hero-content {
       position: relative; z-index: 2;
@@ -861,7 +867,25 @@
 ──────────────────────────────────────────────────────────────────────────── -->
 <main id="main">
 <section class="hero" aria-labelledby="hero-headline">
-  <div class="hero-bg" role="img" aria-label="Photographer in autumn forest with warm golden light"></div>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-aperture" aria-hidden="true">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="92" stroke="#FFB400" stroke-width="1"/>
+      <circle cx="100" cy="100" r="62" stroke="#FFB400" stroke-width="1"/>
+      <g stroke="#FFB400" stroke-width="1">
+        <path d="M100 38 L154 69 L154 100"/>
+        <path d="M154 100 L154 131 L100 162"/>
+        <path d="M100 162 L46 131 L46 100"/>
+        <path d="M46 100 L46 69 L100 38"/>
+        <path d="M100 38 L100 8"/>
+        <path d="M154 69 L180 54"/>
+        <path d="M154 131 L180 146"/>
+        <path d="M100 162 L100 192"/>
+        <path d="M46 131 L20 146"/>
+        <path d="M46 69 L20 54"/>
+      </g>
+    </svg>
+  </div>
 
   <div class="hero-content wrap">
     <p class="hero-kicker">macOS · Local AI · Free</p>
