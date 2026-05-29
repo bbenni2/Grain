@@ -139,55 +139,6 @@
       font-family: var(--font-mono);
     }
 
-    /* ─── Photo ───────────────────────────────────────────────────────────── */
-    .phil-photo-block {
-      margin: 0 0 100px;
-      position: relative;
-    }
-    .phil-photo-wrap {
-      position: relative;
-      border-radius: 18px;
-      overflow: hidden;
-      /* Fallback gradient when photo not yet placed */
-      background: linear-gradient(
-        135deg,
-        #2A1F0E 0%,
-        #1E1610 30%,
-        #241A0F 60%,
-        #1A1410 100%
-      );
-      aspect-ratio: 16/9;
-      min-height: 400px;
-    }
-    .phil-photo-wrap img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center 35%;
-      display: block;
-    }
-    /* Warm grade overlay */
-    .phil-photo-wrap::after {
-      content: '';
-      position: absolute; inset: 0;
-      background:
-        linear-gradient(to bottom, transparent 40%, rgba(20,18,16,.75) 100%),
-        linear-gradient(135deg, rgba(255,180,0,.12) 0%, rgba(124,92,191,.10) 100%);
-      border-radius: 18px;
-    }
-    .phil-photo-caption {
-      position: absolute; bottom: 28px; left: 36px; right: 36px;
-      z-index: 2;
-      display: flex; align-items: flex-end; justify-content: space-between;
-    }
-    .phil-photo-name {
-      font-family: var(--font-display); font-size: 1.3rem; font-weight: 300;
-      color: var(--text); font-variation-settings: 'opsz' 32;
-      letter-spacing: -.01em;
-    }
-    .phil-photo-name em { font-style:italic; color:var(--amber); }
-    .phil-photo-tag {
-      font-family: var(--font-mono); font-size: .68rem; color: var(--text-muted);
-      letter-spacing: .08em;
-    }
     /* ─── Manifesto sections ──────────────────────────────────────────────── */
     .phil-sections {
       display: flex; flex-direction: column; gap: 0;
@@ -399,26 +350,6 @@
   </div>
 </section>
 
-<!-- ────────────────────────────────────────────────────────────────────────
-     PHOTO
-──────────────────────────────────────────────────────────────────────────── -->
-<section class="phil-photo-block" aria-label="Benni shooting in autumn forest">
-  <div class="wrap">
-    <div class="phil-photo-wrap">
-      <!-- Place your photo at website/photos/benni-shooting.jpg -->
-      <img
-        src="photos/benni-shooting.jpg"
-        alt="Benni in an autumn forest, camera raised, warm golden light filtering through the trees"
-        onerror="this.style.display='none'"
-        loading="eager"
-      />
-      <div class="phil-photo-caption">
-        <div class="phil-photo-name">Benni — <em>photographer</em></div>
-        <div class="phil-photo-tag">The reason Grain exists.</div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ────────────────────────────────────────────────────────────────────────
      MANIFESTO SECTIONS
